@@ -1,0 +1,9 @@
+{
+  "cssVariables.lookupFiles": [
+    "./src/app/styles.css",
+    "**/*.css",
+    "**/*.scss",
+    "**/*.sass",
+    "**/*.less"
+  ]
+}

@@ -1,0 +1,64 @@
+.form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 12px;
+    margin: 0 auto;
+    padding: 24px;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    background-color: var(--color-surface);
+
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.button {
+    margin-top: 40px;
+    padding: 10px;
+    font-size: 16px;
+    background-color: var(--color-accent);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    width: 230px;
+    transition: background-color 0.2s ease;
+
+}
+
+.button:hover {
+    background-color: var(--color-accent-hover);
+}
+
+.button:disabled {
+    background-color: var(--color-border);
+    cursor: not-allowed;
+}
+
+.error {
+    color: var(--color-error);
+    font-size: 14px;
+    text-align: center;
+}
+
+.columns {
+    display: flex;
+    gap: 24px;
+    justify-content: center;
+    flex-wrap: wrap;
+    /* для адаптивности */
+}
+
+.column {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-width: 180px;
+    flex: 1;
+
+    p{
+        color: white;
+    }
+}

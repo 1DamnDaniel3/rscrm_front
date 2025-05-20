@@ -1,0 +1,150 @@
+.input_group {
+  position: relative;
+  width: 100%;
+}
+
+.input {
+  width: 100%;
+  border: solid 1.5px var(--input-border);
+  border-radius: 1rem;
+  background: var(--input-bg);
+  padding: 1rem 2.5rem 1rem 1rem; /* добавлен правый padding под иконку */
+  font-size: 1rem;
+  color: var(--color-text);
+  transition: border 150ms cubic-bezier(0.4, 0, 0.2, 1), background 0.2s ease;
+}
+
+.input[type="date"] + .user_label {
+  top: -8px;
+  font-size: 12px;
+  padding: 0 0 7px 5px;
+  left: 12px;
+}
+
+.user_label {
+  position: absolute;
+  left: 15px;
+  color: var(--color-subtext);
+  pointer-events: none;
+  transform: translateY(1rem);
+  transition: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  background-color: transparent;
+}
+
+/* Активное и валидное состояние */
+.input:focus,
+.input:valid {
+  outline: none;
+  border: 1.5px solid var(--color-accent);
+}
+
+/* Плавающий label */
+.input:focus ~ .user_label,
+.input:valid ~ .user_label {
+  transform: translateY(-50%) scale(0.8);
+  background-color: var(--color-bg);
+  padding: 0 0.2em;
+  color: var(--color-accent);
+}
+
+.eye_wrapper {
+  position: absolute;
+  top: 50%;
+  right: 1rem;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 1.25rem;
+  fill: var(--color-subtext);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  /* для удобства позиционирования */
+  width: 1.5em; 
+  height: 1.5em;
+}
+
+.eye{
+  width: 1.25em;
+  height: 1.25em;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform-origin: center center;
+  transform: translate(-50%, -50%) scale(0.95);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  opacity: 0;
+  pointer-events: none; 
+  animation: none;
+  z-index: 1;
+}
+.eye_slash{
+  width: 1.25em;
+  height: 1.25em;
+  position: absolute;
+  top: 50%;
+  left: 42%;
+  transform-origin: center center;
+  transform: translate(-50%, -50%) scale(0.95);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  opacity: 0;
+  pointer-events: none; 
+  animation: none;
+  z-index: 1;
+}
+
+/* Иконка глаза (open eye) */
+.eye_wrapper .eye {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+  pointer-events: auto;
+  z-index: 2;
+}
+
+/* Когда show активен - скрываем глаз и показываем перечёркнутый */
+.eye_wrapper.show .eye {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.95);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.eye_wrapper .eye_slash {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.95);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.eye_wrapper.show .eye_slash {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+  pointer-events: auto;
+  z-index: 2;
+}
+
+.eye_wrapper.anim:not(.show) .eye {
+  animation: keyframes-fill 0.3s ease;
+}
+
+/* Анимация для перечёркнутого глаза, когда он видим (showPassword === true) */
+.eye_wrapper.anim.show .eye_slash {
+  animation: keyframes-fill 0.3s ease;
+}
+
+@keyframes keyframes-fill {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0;
+  }
+
+  50% {
+    transform: translate(-50%, -50%) scale(1.2);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+}

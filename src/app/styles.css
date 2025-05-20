@@ -1,0 +1,59 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+
+}
+
+:root {
+    --color-bg: #3B3C3F;
+    /* основной тёмный фон */
+    --color-surface: #27272A;
+    /* блоки, карточки */
+    --color-text: #F7F7F8;
+    /* основной текст */
+    --color-subtext: #DADADD;
+    /* вторичный текст */
+    --color-border: #4E4E56;
+    /* границы */
+    --color-muted: #434349;
+    /* фон инпутов, иконки */
+
+    --color-accent: #F77D40;
+    /* кнопки, ссылки, действия */
+    --color-accent-hover: #FAAB77;
+    --color-accent-active: #D03311;
+
+    --color-error: #E64110;
+    --color-success: #F55B1A;
+
+    --input-bg: #3B3C3F;
+    --input-border: #606169;
+}
+
+[data-theme='light'] {
+    --color-bg: #FFF5ED;
+    /* очень светлый фон */
+    --color-surface: #FEE8D6;
+    /* блоки/карточки */
+    --color-text: #27272A;
+    /* основной текст */
+    --color-subtext: #434349;
+    /* вторичный текст */
+    --color-border: #DADADD;
+    /* границы */
+    --color-muted: #EEEFF0;
+    /* фон ввода или muted */
+
+    --color-accent: #F77D40;
+    /* кнопки, ссылки, действия */
+    --color-accent-hover: #FAAB77;
+    --color-accent-active: #D03311;
+
+    --color-error: #E64110;
+    /* ошибки */
+    --color-success: #F55B1A;
+
+    --input-bg: #fff;
+    --input-border: #BABBBF;
+}

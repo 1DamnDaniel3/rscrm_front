@@ -1,0 +1,28 @@
+.buttonLink {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  cursor: pointer;
+
+  color: #fff;
+  line-height: 2;
+  position: relative;
+}
+
+.buttonLink::before {
+  content: '';
+  width: 0;
+  height: 2px;
+  border-radius: 2px;
+  background-color: #fff;
+  position: absolute;
+  bottom: -.25rem;
+  left: 0;
+  transition: width 0.4s;
+}
+
+.buttonLink:hover::before {
+  width: 100%;
+}

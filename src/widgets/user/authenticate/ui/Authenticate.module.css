@@ -1,0 +1,23 @@
+.authContainer{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-direction: column;
+
+    .links{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        color: var(--color-accent);
+        padding-bottom: 10px;
+
+    }
+
+    p{
+        font-size: 30px;
+    }
+
+}

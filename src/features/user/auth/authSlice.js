@@ -1,0 +1,105 @@
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { APIs } from "../../../shared";
+import { setCurrentUser } from "../../../entities";
+
+export const login = createAsyncThunk(
+  'auth/login',
+  async ({ email, password }, { dispatch, rejectWithValue }) => {
+    try {
+      const response = await APIs.user.loginUser({ email, password });
+      if (!response) throw new Error(response.data.message || 'Ошибка входа');
+      dispatch(setCurrentUser(response.data.user));
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const logout = createAsyncThunk(
+  'auth/logout',
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await APIs.user.logoutUser();
+      const data = await response.json();
+      if (!response) throw new Error(data.message || 'Ошибка выхода');
+
+      return data.user;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+)
+
+export const checkAuth = createAsyncThunk(
+  'auth/checkAuth',
+  async (_, { dispatch, rejectWithValue }) => {
+    try {
+      const response = await APIs.user.authCheck();
+      if (!response) throw new Error(response.message || 'Ошибка');
+
+      dispatch(setCurrentUser(response.data.user));
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+const authSlice = createSlice({
+  name: 'auth',
+  initialState: {
+    isAuth: false,
+    loading: false,
+    error: null,
+  },
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(login.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(login.fulfilled, (state) => {
+        state.isAuth = true;
+        state.loading = false;
+      })
+      .addCase(login.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+
+      // ================================= LOGOUT
+
+      .addCase(logout.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(logout.fulfilled, (state) => {
+        state.isAuth = false;
+        state.loading = false;
+      })
+      .addCase(logout.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+
+      // ================================= CHECK AUTH
+
+      .addCase(checkAuth.fulfilled, (state) => {
+        state.isAuth = true;
+        state.loading = false;
+      })
+      .addCase(checkAuth.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+        state.isAuth = false;
+      });
+  },
+});
+
+export const selectIsAuth = (state) => state.auth.isAuth;
+export const selectAuthLoading = (state) => state.auth.loading;
+export const selectAuthError = (state) => state.auth.error;
+
+export default authSlice.reducer;
