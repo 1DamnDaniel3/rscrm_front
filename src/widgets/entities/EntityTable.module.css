@@ -1,0 +1,6 @@
+.header{
+    background-color: var(--input-border);
+    &:hover{
+        background-color: var(--input-border);
+    }
+}

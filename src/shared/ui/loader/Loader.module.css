@@ -2,6 +2,7 @@
   width: 60px;
   display: flex;
   justify-content: space-evenly;
+  background-color: var(--color-bg);
 }
 
 .ball {
@@ -9,7 +10,7 @@
   width: 12px;
   height: 12px;
   border-radius: 50%;
-  background-color: #fff;
+  background-color: var(--color-accent);
 }
 
 .ball:nth-child(1) {

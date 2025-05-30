@@ -1,0 +1,21 @@
+/* Footer.module.css */
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+
+  width: 100%;
+  height: 55px;
+  background-color: var(--input-border);
+  z-index: 100;
+  padding-left: 100px;
+}
+
+.plusBtn {
+  width: 55px;
+  height: 55px;
+}

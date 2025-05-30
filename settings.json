@@ -1,9 +1,9 @@
 {
-  "cssVariables.lookupFiles": [
-    "./src/app/styles.css",
-    "**/*.css",
-    "**/*.scss",
-    "**/*.sass",
-    "**/*.less"
-  ]
+  "cssVarriablesAutocomplete.files": ["./src/app/styles.css"],
+  "cssVarriablesAutocomplete.languageModes": ["css", "postcss"],
+  "cssVarriablesAutocomplete.propertyPrefixes": {
+    "font-size": "fs",
+    "line-height": "lh"
+  }
 }
+

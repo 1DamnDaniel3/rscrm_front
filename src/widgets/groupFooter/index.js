@@ -1,0 +1,1 @@
+export { GroupFooter } from './ui/GroupFooter'

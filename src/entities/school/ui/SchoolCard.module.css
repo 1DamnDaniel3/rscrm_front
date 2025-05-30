@@ -1,0 +1,33 @@
+.card {
+  background-color: var(--color-subtext);
+  padding: 1rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  margin-bottom: 1rem;
+  transition: transform 0.2s ease;
+
+  width: 400px;
+  height: 250px;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+}
+
+.name {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.address {
+  color: #666;
+  font-size: 0.95rem;
+  margin-top: 0.5rem;
+}
+
+.owner {
+  font-size: 0.85rem;
+  color: #999;
+  margin-top: 0.25rem;
+}

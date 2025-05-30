@@ -1,0 +1,1 @@
+export { DeleteEntityBtn } from './ui/DeleteEntityBtn'

@@ -1,0 +1,1 @@
+export { AdminSchools } from './ui/Schools'

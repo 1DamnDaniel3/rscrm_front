@@ -7,11 +7,18 @@ export const login = createAsyncThunk(
   async ({ email, password }, { dispatch, rejectWithValue }) => {
     try {
       const response = await APIs.user.loginUser({ email, password });
-      if (!response) throw new Error(response.data.message || 'Ошибка входа');
-      dispatch(setCurrentUser(response.data.user));
+      const accountData = response.data.user;
+      
+      const profile = await APIs.user.setUserProfile(accountData.id)
+      const fullUser = {...accountData, profile: profile.data}
+
+      dispatch(setCurrentUser(fullUser));
+
+
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.message);
+      const serverMessage = error.response?.data?.message || "Ошибка входа";
+      return rejectWithValue(serverMessage);
     }
   }
 );
@@ -85,7 +92,10 @@ const authSlice = createSlice({
       })
 
       // ================================= CHECK AUTH
-
+      .addCase(checkAuth.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
       .addCase(checkAuth.fulfilled, (state) => {
         state.isAuth = true;
         state.loading = false;

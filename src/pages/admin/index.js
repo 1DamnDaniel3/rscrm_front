@@ -1,0 +1,1 @@
+export { AdminSchools } from './adminSchools'

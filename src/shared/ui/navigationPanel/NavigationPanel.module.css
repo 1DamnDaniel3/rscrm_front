@@ -1,0 +1,76 @@
+.panel {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100px;
+  background-color: var(--color-surface);
+  transition: width 0.3s ease;
+  overflow: hidden;
+  color: var(--color-text);
+  z-index: 1000;
+
+  display: flex;
+  flex-direction: column;
+
+  &:hover {
+    width: 260px;
+
+    .content {
+      .logo {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+      }
+    }
+
+
+  }
+
+  .content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .logo {
+      padding: 100px 20px 20px 20px;
+      font-weight: bold;
+      font-size: 1.2rem;
+      text-align: center;
+      white-space: nowrap;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px);
+      transition: all 0.3s ease;
+
+      img {
+        width: 150px;
+      }
+    }
+
+    .nav {
+      display: flex;
+      flex-direction: column;
+      padding: 0 20px;
+      margin-top: 30px;
+
+      a {
+        color: var(--color-text);
+        text-decoration: none;
+        margin-bottom: 20px;
+        white-space: nowrap;
+        transition: opacity 0.2s;
+
+        &:hover {
+          opacity: 0.7;
+        }
+      }
+    }
+  }
+
+  .logoutBtn {
+    margin-bottom: 40px;
+    align-self: center;
+  }
+}

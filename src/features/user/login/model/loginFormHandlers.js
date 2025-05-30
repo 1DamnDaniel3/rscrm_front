@@ -1,9 +1,13 @@
-export const handleLoginSubmit = async ({ state, dispatchLocal, userLogin }) => {
+import { login } from "../../auth/authSlice";
+
+export const handleLoginSubmit = async ({ state, dispatchLocal, dispatch, navigate }) => {
   dispatchLocal({ type: 'SET_LOADING' });
   try {
-    await userLogin({ email: state.email, password: state.password });
+    await dispatch(login({ email: state.email, password: state.password })).unwrap();
     dispatchLocal({ type: 'CLEAR_FORM' });
-  } catch {
+    navigate('/profile')
+  } catch (error) {
+    dispatchLocal({ type: 'SET_ERROR', payload: error });
   } finally {
     dispatchLocal({ type: 'STOP_LOADING' });
   }

@@ -3,7 +3,6 @@ import { handleLoginSubmit } from '../model/registerFormHandler'
 import { APIs, Input } from '../../../../shared'
 import { useReducer } from 'react'
 import { initialState, registerReducer } from '../model/regisretReducer'
-import { type } from '@testing-library/user-event/dist/type'
 
 export const RegisterForm = ({ setIsLoggin }) => {
     const [state, dispatchLocal] = useReducer(registerReducer, initialState)

@@ -1,6 +1,7 @@
-import { Route, Routes, Navigate } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import { AuthProvider, ThemeProvider } from './context'
-import { AuthenticationPage } from '../pages'
+import { ProtectedRoute } from './hoc/ProtectedRoute';
+import { AuthenticationPage, Leads, Profile, AdminSchools } from '../pages'
 import style from './styles.css'
 
 function App() {
@@ -10,9 +11,18 @@ function App() {
         <ThemeProvider>
 
           <Routes>
-            <Route path='/' element={<div>HELLO YOPTA</div>} />
-
             <Route path='/registration' element={<AuthenticationPage />} />
+
+
+            <Route path='/profile' element={<ProtectedRoute roles={['admin', 'owner', 'manager',
+              'receptionist', 'teacher', 'accountant']}><Profile /></ProtectedRoute>} />
+              
+            <Route path='/leads' element={<ProtectedRoute roles={['manager', 'owner']}><Leads /></ProtectedRoute>} />
+
+            {/* =================== admin =================== */}
+
+            <Route path='/admin/schools' element={<ProtectedRoute roles={['admin']}><AdminSchools /></ProtectedRoute>} />
+
 
           </Routes>
 

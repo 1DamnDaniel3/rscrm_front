@@ -1,0 +1,16 @@
+.iconButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  padding: 6px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  color: inherit;
+}
+
+.iconButton:hover {
+  background-color: var(--color-accent-active);
+}

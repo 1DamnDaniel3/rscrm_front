@@ -19,7 +19,7 @@ export const loginReducer = (state, action) => {
     case 'SET_ERROR':
       return { ...state, loading: false, error: action.payload };
     case 'CLEAR_FORM':
-      return initialState;
+      return { ...state, password: '', loading: false, error: null};
     default:
       return state;
   }

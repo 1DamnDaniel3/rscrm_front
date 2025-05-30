@@ -1,0 +1,14 @@
+.row {
+  display: flex;
+  align-items: center;
+  border-bottom: 2px solid var(--color-subtext);
+  padding: 0 8px;
+  min-height: 48px;
+  transition: background 0.2s ease;
+}
+
+
+.hoverable:hover {
+  background-color: var(--color-bg);
+  cursor: pointer;
+}
