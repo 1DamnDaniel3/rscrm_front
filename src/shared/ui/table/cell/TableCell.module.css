@@ -8,9 +8,11 @@
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
+  gap: 5px;
 
   min-width: 0;
   /* позволяет сжиматься внутри flex-контейнера */
+
   flex: 1 1 auto;
   /* flex-grow: 1;
   flex-shrink: 1;
@@ -27,6 +29,9 @@
   background: none;
   padding: 4px;
   color: var(--color-text);
+
+  resize: vertical;
+  min-height: 20px;
 
   &:focus {
     background-color: var(--color-bg);

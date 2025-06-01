@@ -3,6 +3,6 @@ export {
     Loader, Input, Link, ButtonLink,
     Table, TableCell, TableRow,
     IconButton, NavigationPanel, AddButton,
-    Footer,
+    Footer, HeroBlock, 
 } from './ui'
-export { formatDate, formatDateTime } from './lib/formatDate'
+export { formatDate, formatDateTime, normalizeToInputDate } from './lib/formatDate'

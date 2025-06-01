@@ -1,0 +1,19 @@
+.heroBlock {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 55px 0 55px 0;
+}
+
+.title {
+    font-size: 32px; /* или любой другой размер */
+    font-weight: bold;
+    margin-right: 16px;
+    white-space: nowrap;
+}
+
+.line {
+    flex: 1;
+    height: 1px;
+    background-color: #ccc; /* или твой цвет */
+}

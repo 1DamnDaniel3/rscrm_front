@@ -1,14 +1,15 @@
 import s from './Leads.module.css'
 import { LeadsTable, Navigation, GroupFooter } from '../../../widgets'
+import { HeroBlock } from '../../../shared'
 
 
 export const Leads = () => {
     return (
         <div className={s.pageContainer}>
-            <h1>LEADS</h1>
+            <HeroBlock heroTitle={"LEADS"}/>
             <Navigation />
             <LeadsTable />
-            <GroupFooter/>
+            <GroupFooter />
 
         </div>
     )
