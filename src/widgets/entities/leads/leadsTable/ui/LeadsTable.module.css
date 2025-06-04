@@ -1,34 +1,7 @@
-.wrapper {
-  overflow-x: auto;
-}
-
-.table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 14px;
-}
-
-th,
-td {
-  padding: 12px;
-  border-bottom: 1px solid #444;
-  text-align: left;
-  white-space: nowrap;
-}
-
-th {
-  background-color: #333;
-  color: white;
-  font-weight: 600;
-}
-
-.empty {
-  text-align: center;
-  padding: 20px;
-  color: #888;
-}
-
-.actions {
+.aboveTableActions{
   display: flex;
-  gap: 8px;
+  flex-direction: column;
+
+  justify-content: center;
+  align-items: center;
 }

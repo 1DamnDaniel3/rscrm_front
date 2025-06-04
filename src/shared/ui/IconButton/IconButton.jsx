@@ -6,7 +6,8 @@ export const IconButton = ({
   onClick, 
   title = '', 
   className = '', 
-  type = 'button' 
+  type = 'button',
+  iconClass
 }) => {
   return (
     <button 
@@ -16,7 +17,7 @@ export const IconButton = ({
       aria-label={title}
       className={cn(s.iconButton, className)}
     >
-      <img src={icon} alt={icon} />
+      <img className={cn(iconClass, s.image)} src={icon} alt={icon} />
     </button>
   )
 }

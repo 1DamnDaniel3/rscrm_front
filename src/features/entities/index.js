@@ -1,1 +1,1 @@
-export { DeleteEntityBtn } from './common'
+export { DeleteEntityBtn, AddEntityBtn } from './common'

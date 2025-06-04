@@ -1,7 +1,11 @@
 .pageContainer {
+    position: absolute;
+    overflow-x: hidden;
+    box-sizing: border-box;
     height: auto;
+
+    width: 100%;
     min-height: 100vh;
     background-color: var(--color-bg);
-    padding: 0 55px 55px 155px ;
+    padding: 0 55px 55px 155px;
 }
-

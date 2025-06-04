@@ -1,6 +1,7 @@
-import s from './Leads.module.css'
 import { LeadsTable, Navigation, GroupFooter } from '../../../widgets'
 import { HeroBlock } from '../../../shared'
+import s from './Leads.module.css'
+
 
 
 export const Leads = () => {

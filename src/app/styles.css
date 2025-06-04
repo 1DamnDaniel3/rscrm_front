@@ -4,10 +4,12 @@
     box-sizing: border-box;
 }
 
+
+
 @font-face {
     font-family: 'raydis-header';
     src: url('/public/fonts/RAYDIS.woff2') format('woff2'),
-         url('/public/fonts/RAYDIS.woff') format('woff');
+        url('/public/fonts/RAYDIS.woff') format('woff');
     font-weight: 700;
     font-style: normal;
     font-display: swap;
@@ -16,21 +18,26 @@
 @font-face {
     font-family: 'involve-regular';
     src: url('/public/fonts/Involve-VF.woff2') format('woff2'),
-         url('/public/fonts/Involve-VF.woff') format('woff');
+        url('/public/fonts/Involve-VF.woff') format('woff');
     font-weight: 400;
     font-style: normal;
     font-display: swap;
 }
 
 body {
-  font-family: 'involve_regular', sans-serif;
-  background-color: var(--color-bg);
-  color: var(--color-text);
+    font-family: 'involve_regular', sans-serif;
+    background-color: var(--color-bg);
+    color: var(--color-text);
 }
 
-h1, h2, h3, h4, h5, h6 {
-  font-family: 'raydis_header', sans-serif;
-  font-weight: 700;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: 'raydis_header', sans-serif;
+    font-weight: 700;
 }
 
 :root {

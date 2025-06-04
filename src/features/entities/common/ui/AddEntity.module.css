@@ -1,0 +1,30 @@
+.button {
+    position: absolute;
+    margin-bottom: 10px;
+    border-radius: 20px 20px 0 0;
+    border: none;
+    width: 250px;
+    height: 40px;
+    background-color: var(--color-accent);
+    transform: translateY(18px);
+    transition: transform 0.3s ease, background-color 0.3s ease;
+
+
+    &:hover {
+        transform: translateY(0px);
+        background-color: var(--color-accent-hover);
+        border-radius: 20px 20px 0 0;
+
+
+        .icon {
+            opacity: 1;
+        }
+    }
+
+    .icon {
+        opacity: 0;
+        margin-bottom: 15px;
+        height: 20px;
+        transition: opacity 0.5s ease;
+    }
+}

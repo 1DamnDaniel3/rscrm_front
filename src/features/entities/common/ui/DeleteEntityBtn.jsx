@@ -1,6 +1,8 @@
 import { IconButton } from '../../../../shared'
-import trashIco from '../../../../shared/assets/icons/garbage.svg'
 import { useDispatch } from 'react-redux'
+import trashIco from '../../../../shared/assets/icons/garbage.svg'
+import s from './DeleteEntityBtn.module.css'
+
 
 export const DeleteEntityBtn = ({ entityName, deleteThunk, id }) => {
   const dispatch = useDispatch()
@@ -15,9 +17,10 @@ export const DeleteEntityBtn = ({ entityName, deleteThunk, id }) => {
 
   return (
     <IconButton
+      className={s.deleteBtn}
       icon={trashIco}
       onClick={handleDelete}
-      title="Удалить"
+      title="Удалить запись"
     />
   )
 }

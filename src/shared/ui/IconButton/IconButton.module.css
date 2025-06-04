@@ -10,7 +10,3 @@
   transition: background-color 0.2s ease;
   color: inherit;
 }
-
-.iconButton:hover {
-  background-color: var(--color-accent-active);
-}

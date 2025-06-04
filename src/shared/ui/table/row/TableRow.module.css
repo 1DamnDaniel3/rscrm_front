@@ -6,16 +6,10 @@
   border-bottom: 2px solid var(--input-border);
   padding: 0 8px;
   min-height: 48px;
-  transition: background 0.2s ease;
   position: relative;
-  
   gap: 10px;
 }
 
-.hoverable:hover {
-  background-color: var(--color-bg);
-  cursor: pointer;
-}
 
 .expandToggle {
   padding: 30px 0 0 0;
@@ -23,6 +17,12 @@
   user-select: none;
   font-size: 12px;
   color: var(--color-subtext);
+}
+
+/* Анимация раскрытия */
+.expandedWrapper {
+  overflow: hidden;
+  transition: max-height 0.3s ease, opacity 0.3s ease;
 }
 
 .expandedContent {

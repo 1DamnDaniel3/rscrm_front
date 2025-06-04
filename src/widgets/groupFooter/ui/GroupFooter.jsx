@@ -1,7 +1,8 @@
-import { useDispatch, useSelector } from "react-redux"
-import { Footer } from "../../../shared"
-import { fetchGroups, selectGroups, selectUser } from "../../../entities"
-import { useEffect } from "react"
+import { useDispatch, useSelector } from "react-redux";
+import { Footer } from "../../../shared";
+import { fetchGroups, selectGroups, selectUser } from "../../../entities";
+import { useEffect } from "react";
+import s from './GroupFooter.module.css'
 
 export const GroupFooter = () => {
     const dispatch = useDispatch();
@@ -20,7 +21,7 @@ export const GroupFooter = () => {
     }, [dispatch, user.school_id])
 
     return (
-        <div>
+        <div className={s.groupFooter}>
 
             <Footer />
 

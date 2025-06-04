@@ -1,5 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { userReducer, leadsReducer, groupReducer, statusReducer } from '../entities'
+import { userReducer, leadsReducer, groupReducer, statusReducer, sourceReducer } from '../entities'
 import { authReducer } from '../features'
 
 export const store = configureStore({
@@ -10,5 +10,6 @@ export const store = configureStore({
         leads: leadsReducer,
         groups: groupReducer,
         statuses: statusReducer,
+        sources: sourceReducer,
     }
 })

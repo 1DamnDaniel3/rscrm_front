@@ -1,7 +1,15 @@
 import { Table, TableRow, TableCell } from '../../shared'
 import s from './EntityTable.module.css'
+import { useDispatch } from 'react-redux'
 
-export const EntityTable = ({ data, columns, actions, expandedColumns }) => {
+export const EntityTable = ({ data, columns, actions, expandedColumns, updateThunk }) => {
+  const dispatch = useDispatch()
+
+  const onSaveHandler = (entity_id, data) => {
+    console.log('data', data)
+    dispatch(updateThunk({ id: entity_id, data }))
+  }
+
   return (
     <Table>
       {/* Заголовок */}
@@ -22,13 +30,12 @@ export const EntityTable = ({ data, columns, actions, expandedColumns }) => {
 
       {/* Строки */}
       {data.map((item, index) => {
-        // Формируем JSX для дополнительного раскрываемого содержимого
+        // JSX для дополнительного раскрываемого содержимого
         const extraContent = expandedColumns ? (
-          <div className={s.expanded}>
+          <div className={`${s.expanded} ${s.expandedVisible}`}>
             {expandedColumns.map((col) => (
-              <div className={s.expandedRow}>
+              <div className={s.expandedRow} key={col.key}>
                 <strong>{col.title}</strong>{' '}
-
                 <TableRow>
                   <TableCell
                     key={col.key}
@@ -37,20 +44,17 @@ export const EntityTable = ({ data, columns, actions, expandedColumns }) => {
                     maxWidth={col.maxWidth}
                     editable={col.editable}
                     editType={col.editType}
+                    isPhone={col.isPhone}
                     options={col.options}
                     onSave={(newValue) => {
-                      console.log(`Save: ${item.id}.${col.key} = ${newValue}`)
+                      const field = col.dataKey || col.key
+                      onSaveHandler(item.id, { [field]: newValue })
                     }}
                   >
-
-                    {col.render
-                      ? col.render(item[col.key], item)
-                      : item[col.key] || '—'}
+                    {col.render ? col.render(item[col.key], item) : item[col.key] || '—'}
                   </TableCell>
                 </TableRow>
-
               </div>
-
             ))}
           </div>
         ) : null
@@ -66,12 +70,16 @@ export const EntityTable = ({ data, columns, actions, expandedColumns }) => {
                 maxWidth={col.maxWidth}
                 editable={col.editable}
                 editType={col.editType}
+                isPhone={col.isPhone}
                 options={col.options}
                 onSave={(newValue) => {
-                  console.log(`Save: ${item.id}.${col.key} = ${newValue}`)
+                  const field = col.dataKey || col.key
+                  onSaveHandler(item.id, { [field]: newValue })
                 }}
               >
-                {col.render ? col.render(item[col.key], item) : item[col.key]}
+                {col.editType === 'select'
+                  ? item[col.dataKey]
+                  : (col.render ? col.render(item[col.key], item) : item[col.key])}
               </TableCell>
             ))}
             {actions && (

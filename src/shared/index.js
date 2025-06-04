@@ -5,4 +5,4 @@ export {
     IconButton, NavigationPanel, AddButton,
     Footer, HeroBlock, 
 } from './ui'
-export { formatDate, formatDateTime, normalizeToInputDate } from './lib/formatDate'
+export { formatDate, formatDateTime, normalizeToInputDate } from './lib'
