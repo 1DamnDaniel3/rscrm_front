@@ -1,7 +1,7 @@
 import clsx from 'clsx'
-import styles from './Select.module.css'
+import styles from './SelectLong.module.css'
 
-export const Select = ({ label, options, value, onChange, name, className }) => {
+export const SelectLong = ({ label, options, value, onChange, name, className }) => {
   return (
     <div className={clsx(styles.wrapper, className)}>
       {label && <label className={styles.label}>{label}</label>}

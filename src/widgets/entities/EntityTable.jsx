@@ -6,7 +6,7 @@ export const EntityTable = ({ data, columns, actions, expandedColumns, updateThu
   const dispatch = useDispatch()
 
   const onSaveHandler = (entity_id, data) => {
-    console.log('data', data)
+    // console.log('data', data)
     dispatch(updateThunk({ id: entity_id, data }))
   }
 

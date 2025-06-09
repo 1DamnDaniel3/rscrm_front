@@ -4,12 +4,13 @@ import icon from '../../../../shared/assets/icons/plusIcon.svg'
 import s from './AddEntity.module.css'
 
 
-export const AddEntityBtn = ({ entityName, addThunk, entityData }) => {
+export const AddEntityBtn = ({ entityName, addThunk, entityData, onSuccess }) => {
     const dispatch = useDispatch();
 
     const handleCreate = async () => {
         try {
-            await dispatch(addThunk(entityData)).unwrap()
+            await dispatch(addThunk(entityData)).unwrap();
+            onSuccess?.();
         } catch (err) {
             console.error(`Ошибка добавления ${entityName || 'сущности'}`, err)
         }

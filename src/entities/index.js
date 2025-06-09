@@ -11,6 +11,11 @@ export {
     selectLeads, selectLoadLeads, selectErrorLeads,
     leadsApi,
 } from './lead'
+// ========================== student ==========================
+export { studentApi,
+    studentReducer, fetchStudents, addStudent, updateStudent, deleteStudent,
+    selectStudents, selectLoadStudents, selectErrorStudents,
+ } from './students'
 // ========================== school ==========================
 export { SchoolCard, schoolsApi } from './school'
 // ========================== status ==========================
@@ -31,7 +36,8 @@ export {
 // ========================== group ==========================
 export {
     groupReducer,
-    selectGroups, selectGroupsError, selectGroupsLoading,
-    fetchGroups, deleteGroup, updateGroup, groupApi
+    selectGroups, selectGroupsError, selectGroupsLoading, selectSelectedGroupId,
+    fetchGroups, deleteGroup, updateGroup, groupApi, addGroup, setSelectedGroupId
 } from './group'
+
 

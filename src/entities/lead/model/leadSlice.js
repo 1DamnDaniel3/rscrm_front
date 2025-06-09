@@ -80,7 +80,7 @@ const leadSlice = createSlice({
                 const sortedPayload = action.payload.slice().sort((a, b) => {
                     const idA = typeof a.id === 'string' ? Number(a.id) : a.id;
                     const idB = typeof b.id === 'string' ? Number(b.id) : b.id;
-                    return idB - idA; // <- меняем порядок на обратный
+                    return idB - idA; 
                 });
 
                 state.leads = sortedPayload.map(lead => ({
@@ -95,7 +95,8 @@ const leadSlice = createSlice({
                     source_name: lead.Source?.name || '',
                     status_id: lead.Status?.id || '',
                     status_name: lead.Status?.name || '',
-                    created_by: lead.UserAccount?.UserProfile?.full_name || ''
+                    created_by: lead.UserAccount?.UserProfile?.full_name || '',
+                    groups: lead.Groups || []
                 }));
 
                 state.loading = false;
@@ -143,7 +144,6 @@ const leadSlice = createSlice({
 
                 const idx = state.leads.findIndex(l => l.id === updatedId);
                 if (idx < 0) {
-                    // Если лида нет, добавляем полностью
                     state.leads.push({
                         id: updatedId,
                         name: updated.name,
@@ -156,7 +156,8 @@ const leadSlice = createSlice({
                         source_name: updated.Source?.name || '',
                         status_id: updated.Status?.id ?? null,
                         status_name: updated.Status?.name || '',
-                        created_by: updated.UserAccount?.UserProfile?.full_name || ''
+                        created_by: updated.UserAccount?.UserProfile?.full_name || '',
+                        groups: updated?.Groups || []
                     });
                 } else {
                     const existing = state.leads[idx];
@@ -222,7 +223,8 @@ const leadSlice = createSlice({
                     source_name: lead.Source?.name ?? '',
                     status_id: lead.Status?.id ?? null,
                     status_name: lead.Status?.name ?? '',
-                    created_by: lead.UserAccount?.UserProfile?.full_name ?? ''
+                    created_by: lead.UserAccount?.UserProfile?.full_name ?? '',
+                    groups: lead.Groups || []
                 });
 
                 // Сортируем по убыванию id (новые наверху)

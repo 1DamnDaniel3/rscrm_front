@@ -1,10 +1,14 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { deleteLead, selectUser, selectLeads, fetchLeads, selectStatuses, selectSources, fetchSources, updateLead, addLead } from '../../../../../entities'
+import { formatDate } from '../../../../../shared'
+import {
+  deleteLead, selectUser, selectLeads,
+  fetchLeads, selectStatuses, selectSources,
+  fetchSources, updateLead, addLead,
+  selectSelectedGroupId, fetchStatuses
+} from '../../../../../entities'
 import { AddEntityBtn, DeleteEntityBtn } from '../../../../../features'
-import { formatDate, normalizeToInputDate } from '../../../../../shared'
 import { EntityTable } from '../../../EntityTable'
-import { fetchStatuses } from '../../../../../entities'
 import s from './LeadsTable.module.css'
 
 export const LeadsTable = ({ onEdit }) => {
@@ -16,7 +20,12 @@ export const LeadsTable = ({ onEdit }) => {
   const source = useSelector(selectSources);
   const updateThunk = updateLead;
   const addThunk = addLead;
+  const currentGroup = useSelector(selectSelectedGroupId)
 
+  const groupedLeads = currentGroup ? leads.filter(lead => 
+    Array.isArray(lead.groups) && lead.groups.some(group => group.id === currentGroup)) : [];
+
+  
 
   const defaultAddData = {
     name: "Новый Лид",
@@ -26,6 +35,7 @@ export const LeadsTable = ({ onEdit }) => {
     qualification: "",
     created_by: user.id,
     school_id: user.school_id,
+    group_id: currentGroup,
   }
 
   useEffect(() => {
@@ -33,14 +43,14 @@ export const LeadsTable = ({ onEdit }) => {
     const schoolId = user.school_id === "null" ? null : user.school_id;
     if (schoolId) {
       dispatch(fetchLeads(schoolId));
-      dispatch(fetchStatuses(schoolId));
+      dispatch(fetchStatuses({school_id: schoolId, type: "lead"}));
       dispatch(fetchSources());
     }
 
 
   }, [dispatch, user.school_id])
-  const statusOptions = (statusList) => statusList.map(s => ({ name: s.name, id: s.id }))
-  const sourceOptions = (sourceList) => sourceList.map(s => ({ name: s.name, id: s.id }))
+  const statusOptions = (statusList) => statusList.map(s => ({ name: s.name, id: s.id }));
+  const sourceOptions = (sourceList) => sourceList.map(s => ({ name: s.name, id: s.id }));
 
 
 
@@ -83,8 +93,7 @@ export const LeadsTable = ({ onEdit }) => {
     {
       key: 'converted_to_client_at',
       ellipsis: true,
-      editable: true,
-      editType: 'date',
+      editable: false,
       title: 'Реализован',
       render: formatDate,
     },
@@ -110,11 +119,12 @@ export const LeadsTable = ({ onEdit }) => {
           entityName={"leads"}
           addThunk={addThunk}
           entityData={defaultAddData}
+          onSuccess={() => dispatch(fetchLeads(user.school_id))}
 
         />
       </div>
       < EntityTable
-        data={leads}
+        data={groupedLeads}
         columns={columns}
         actions={actions}
         expandedColumns={expandedColumns}

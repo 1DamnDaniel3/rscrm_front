@@ -10,7 +10,7 @@ export const Leads = () => {
             <HeroBlock heroTitle={"LEADS"}/>
             <Navigation />
             <LeadsTable />
-            <GroupFooter />
+            <GroupFooter entity_type={"lead"} />
 
         </div>
     )

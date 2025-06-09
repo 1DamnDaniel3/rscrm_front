@@ -1,0 +1,57 @@
+.groupFooter {
+  display: flex;
+  flex-direction: row;
+  position: fixed;
+  box-sizing: border-box;
+
+}
+
+.button {
+  display: flex;
+  padding: 5px;
+  height: 40px;
+  width: auto;
+  min-width: 100px;
+  border-radius: 0;
+  border-right: 2px solid var(--input-border);
+  background-color: var(--color-accent);
+  
+  position: relative;
+  color: var(--color-text);
+
+}
+
+.buttonText {
+  font: inherit;
+  color: inherit;
+  background: transparent;
+  border: none;
+  padding: 0;
+  outline: none;
+  text-align: center;
+  width: 100%;
+}
+
+
+.selectedButton {
+  height: 40px;
+  width: auto;
+  min-width: 100px;
+  border-radius: 0;
+  background-color: var(--color-accent-hover);
+  border-right: 2px solid var(--input-border);
+  position: relative;
+  color: var(--color-text);
+
+}
+
+.plusBtn {
+  width: 40px;
+  height: 40px;
+  border-radius: 0px;
+  background-color: var(--color-accent);
+
+  &:hover {
+    background-color: var(--color-accent-hover);
+  }
+}

@@ -5,9 +5,9 @@ import { APIs } from "../../../shared";
 
 export const fetchStatuses = createAsyncThunk(
     'statuses/fetchStatuses',
-    async (school_id, { rejectWithValue }) => {
+    async (data, { rejectWithValue }) => {
         try {
-            const response = await APIs.status.getSchoolStatuses({ school_id });
+            const response = await APIs.status.getSchoolStatuses(data);
             return response.data;
         } catch (error) {
             const serverMessage = error.response?.data?.message || 'server error';

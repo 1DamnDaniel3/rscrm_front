@@ -1,0 +1,58 @@
+/* SelectShort.module.css */
+.wrapper {
+  position: relative;
+  display: inline-block;
+  font-family: inherit;
+  overflow: visible;
+}
+
+.toggle {
+  width: 24px;
+  height: 24px;
+  background-color: rgba(0, 0, 0, 0.1);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  border: none;
+  border-radius: 4px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+
+.toggle:hover {
+  transform: translateY(-0.1rem);
+}
+
+.options {
+  position: absolute;
+  bottom: calc(100% + 4px);
+  right: 0;
+  background: #2a2a2a;
+  border: 1px solid #444;
+  border-radius: 4px;
+  margin: 0;
+  padding: 4px 0;
+  list-style: none;
+  max-height: 200px;
+  overflow-y: hidden;
+  z-index: 1000;
+}
+
+.option {
+  padding: 8px 12px;
+  font-size: 14px;
+  color: #fff;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.option:hover {
+  background-color: rgba(255, 111, 61, 0.2);
+}
+
+.selected {
+  background-color: rgba(255, 111, 61, 0.4);
+}
