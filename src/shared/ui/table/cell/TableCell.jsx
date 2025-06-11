@@ -63,7 +63,7 @@ export const TableCell = ({
                 // Если телефон, используем IMaskInput
                 return isPhone ? (
                     <IMaskInput
-                        className={s.input}
+                        className={cn(s.input, className)}
                         mask="+7 (000) 000-00-00"
                         unmask={false} 
                         value={draftValue}
@@ -73,7 +73,7 @@ export const TableCell = ({
                     />
                 ) : (
                     <input
-                        className={s.input}
+                        className={cn(s.input, className)}
                         value={draftValue}
                         onChange={e => handleChange(e.target.value)}
                         onBlur={handleBlur}
@@ -84,7 +84,7 @@ export const TableCell = ({
             case 'select':
                 return (
                     <select
-                        className={s.input}
+                        className={cn(s.input, className)}
                         value={draftValue}
                         onChange={e => {
                             const newVal = e.target.value;
@@ -104,7 +104,7 @@ export const TableCell = ({
                 return (
                     <input
                         type="date"
-                        className={s.input}
+                        className={cn(s.input, className)}
                         value={draftValue}
                         onChange={e => {
                             const newVal = e.target.value;
@@ -119,7 +119,7 @@ export const TableCell = ({
             case 'textarea':
                 return (
                     <textarea
-                        className={s.input}
+                        className={cn(s.input, className)}
                         value={draftValue}
                         onChange={e => handleChange(e.target.value)}
                         onBlur={handleBlur}

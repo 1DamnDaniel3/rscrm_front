@@ -1,4 +1,4 @@
-import { userApi, leadsApi, schoolsApi, statusApi, groupApi, sourceApi, studentApi } from '../../entities';
+import { userApi, leadsApi, schoolsApi, statusApi, groupApi, sourceApi, studentApi, clientApi, scheduleApi } from '../../entities';
 
 
 export const APIs = {
@@ -9,11 +9,13 @@ export const APIs = {
     status: statusApi,
     //student
     student: studentApi,
+    //client
+    client: clientApi,
 
     group: groupApi,
+    schedule: scheduleApi,
     //school
     schools: schoolsApi,
-
 
 };
 

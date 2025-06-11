@@ -1,12 +1,15 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { addStudent, deleteStudent, fetchStatuses, fetchStudents, selectSelectedGroupId, selectStatuses, selectStudents, selectUser, updateStudent } from '../../../../../entities';
+import {
+    addStudent, deleteStudent, fetchStatuses,
+    fetchStudents, selectSelectedGroupId, selectStatuses,
+    selectStudents, selectUser, updateStudent
+} from '../../../../../entities';
 import { EntityTable } from '../../../EntityTable';
 import { useEffect } from 'react';
 import { formatDate, getAgeFromBirthdate } from '../../../../../shared';
+import { AddEntityBtn, DeleteEntityBtn } from '../../../../../features';
 import s from './StudentsTable.module.css';
-import { render } from '@testing-library/react';
-import { DeleteEntityBtn } from '../../../../../features';
-import { DataList } from './DataList';
+
 
 
 
@@ -21,13 +24,15 @@ export const StudentTable = () => {
     const deleteThunk = deleteStudent;
     const currentGroup = useSelector(selectSelectedGroupId)
 
-    console.log(students)
 
     const groupedStudents = currentGroup ? students.filter(student =>
         Array.isArray(student.groups) && student.groups.some(group => group.id === currentGroup)) : [];
 
     const defaultAddData = {
         name: "Новый ученик",
+        skill_level: 'beginner',
+        school_id: user.school_id,
+        group_id: currentGroup,
     }
 
     useEffect(() => {
@@ -41,6 +46,10 @@ export const StudentTable = () => {
     }, [dispatch, user.school_id])
 
     const statusOptions = (statusList) => statusList.map(s => ({ name: s.name, id: s.id }));
+    const skillOptions = [
+        { name: 'beginner', id: 'beginner', },
+        { name: 'middle', id: 'middle', },
+        { name: 'pro', id: 'pro', }]
 
 
     const columns = [
@@ -48,7 +57,7 @@ export const StudentTable = () => {
         { key: 'birthdate', title: 'Дата рождения', maxWidth: "150px", editable: true, editType: 'date' },
         { key: 'age', title: 'Возраст', align: 'center', maxWidth: "69px", render: getAgeFromBirthdate },
         { key: 'created_at', title: 'Зачислен(-а)', editable: false, ellipsis: true, maxWidth: "100px", render: formatDate },
-        { key: 'skill_level', title: 'Уровень', align: 'center', maxWidth: "150px" },
+        { key: 'skill_level', title: 'Уровень', align: 'center', maxWidth: "150px", editable: true, editType: 'select', options: skillOptions },
         { key: 'contact', title: 'Контакт', align: 'left', ellipsis: true, maxWidth: "200px", editable: true, editType: 'text' },
         {
             key: 'status_name', title: 'Cтатус', align: 'left', ellipsis: true,
@@ -56,16 +65,45 @@ export const StudentTable = () => {
         },
     ]
 
+    // Новая конфигурация sub-таблиц:
     const expandedColumns = [
         {
-            key: 'clients', title: 'Клиенты', ellipsis: true,
-            render: (_, student) =>
-                (<DataList data={student.clients} name={'client_name'}/>)
+            key: 'clients',
+            title: 'Клиенты',
+            // описываем колонки для каждого клиента
+            subColumns: [
+                {
+                    key: 'client_name', title: 'Имя клиента', maxWidth: '250px',
+                },
+                {
+                    key: 'phone', title: 'Телефон', maxWidth: '150px',
+                },
+                {
+                    key: 'relation', title: 'Кем является', maxWidth: '100px', align: 'center',
+                },
+                {
+                    key: 'contact', title: 'контакт', maxWidth: '400px', 
+                },
+
+            ],
         },
         {
-            key: 'subscriptions', title: 'Абонементы', ellipsis: true,
-            render: (_, student) =>
-                (<DataList data={student.subscriptions} />)
+            key: 'subscriptions',
+            title: 'Абонементы',
+            subColumns: [
+                {
+                    key: 'sub_name', title: 'Название абонемента', maxWidth: '180px', ellipsis: true
+                },
+                {
+                    key: 'issued_at', title: 'Начало', align: 'left', render: formatDate, maxWidth: '150px', editable: true, editType: 'date'
+                },
+                {
+                    key: 'expires_at', title: 'Окончание', align: 'left', render: formatDate, maxWidth: '150px',
+                },
+                {
+                    key: 'remaining_visits', title: 'Осталось посещений', align: 'center', maxWidth: '150px',
+                },
+            ],
         },
     ]
 
@@ -83,8 +121,14 @@ export const StudentTable = () => {
 
     return (
         <div className={s.studentTable}>
-            <div>
+            <div className={s.aboveTableActions}>
+                <AddEntityBtn
+                    entityName={"students"}
+                    addThunk={addThunk}
+                    entityData={defaultAddData}
+                    onSuccess={() => dispatch(fetchStudents(user.school_id))}
 
+                />
             </div>
             <div>
                 <EntityTable

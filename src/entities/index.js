@@ -12,10 +12,18 @@ export {
     leadsApi,
 } from './lead'
 // ========================== student ==========================
-export { studentApi,
+export {
+    studentApi,
     studentReducer, fetchStudents, addStudent, updateStudent, deleteStudent,
     selectStudents, selectLoadStudents, selectErrorStudents,
- } from './students'
+} from './students'
+// ========================== client ==========================
+
+export {
+    clientApi,
+    clientReducer, addClient, updateClient, deleteClient, fetchClients,
+    selectClients, selectClientsError, selectClientsLoading,
+} from './client'
 // ========================== school ==========================
 export { SchoolCard, schoolsApi } from './school'
 // ========================== status ==========================
@@ -41,3 +49,7 @@ export {
 } from './group'
 
 
+export {
+    scheduleApi, scheduleReducer, addSchedule, fetchSchedules, updateSchedule, deleteSchedule,
+    selectSchedules, selectSchedulesError, selectSchedulesLoading
+} from './schedule'

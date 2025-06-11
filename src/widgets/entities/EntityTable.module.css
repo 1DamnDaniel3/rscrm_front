@@ -4,3 +4,23 @@
         background-color: var(--input-border);
     }
 }
+.Table{
+    height: auto;
+}
+.subHeader{
+    background-color: var(--color-surface);
+    margin-top: 20px;
+}
+.expandedRow{
+    width: 1300px;
+
+}
+
+.row{
+    background-color: var(--color-surface);
+    width: 100%;
+}
+
+.expandedCell{
+    background-color: var(--color-surface);
+}
