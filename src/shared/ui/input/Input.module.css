@@ -15,7 +15,14 @@
 }
 
 .input[type="date"] + .user_label {
-  top: -8px;
+  top: -12px;
+  font-size: 12px;
+  padding: 0 0 7px 5px;
+  left: 12px;
+}
+
+.input[type="time"] + .user_label {
+  top: -12px;
   font-size: 12px;
   padding: 0 0 7px 5px;
   left: 12px;

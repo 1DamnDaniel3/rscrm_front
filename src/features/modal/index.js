@@ -1,0 +1,1 @@
+export { default as modalReducer, openModal, closeModal, selectIsOpen} from './model/openModal'

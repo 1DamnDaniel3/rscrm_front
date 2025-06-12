@@ -1,0 +1,80 @@
+.form {
+    display: flex;
+    flex-direction: column;
+    margin: 50px auto 0;
+    width: 100%;
+    max-width: 1000px;
+    gap: 16px;
+    padding: 24px;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    background-color: var(--color-surface);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.form input,
+.form select {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    background-color: var(--color-background);
+    transition: border-color 0.2s ease;
+    box-sizing: border-box;
+}
+
+.form input:focus,
+.form select:focus {
+    outline: none;
+    border-color: var(--color-accent);
+}
+
+.form label {
+    margin-bottom: 4px;
+    font-weight: 500;
+    color: var(--color-on-surface);
+}
+
+.actions {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    margin-top: 16px;
+}
+
+.actions .button,
+.actions .buttonLink {
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.actions .button {
+    display: flex;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-accent);
+    color: #fff;
+    border: none;
+    width: 150px;
+}
+
+.actions .button:hover {
+    background-color: var(--color-accent-hover);
+}
+
+.actions .button:disabled {
+    background-color: var(--color-border);
+    cursor: not-allowed;
+}
+
+.actions .buttonLink {
+    background: none;
+    width: 100px;
+    color: var(--color-on-surface);
+}
+

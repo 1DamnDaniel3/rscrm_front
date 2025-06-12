@@ -1,7 +1,7 @@
 export {
     default as userReducer,
     selectSchoolUsers, selectUser, selectUsersLoading, selectUsersError, 
-    setCurrentUser,
+    setCurrentUser, fetchUsers,
     registerAdminSchool
 } from './model/userSlice'
 export { userApi } from './api/userApi'

@@ -4,7 +4,8 @@ export {
     Table, TableCell, TableRow,
     IconButton, NavigationPanel,
     Button, EditableText,
-    Footer, HeroBlock, SelectLong, SelectShort
+    Footer, HeroBlock, SelectLong, SelectShort,
+    Tag, Calendar, Modal
 } from './ui'
 export {
     formatDate, formatDateTime, normalizeToInputDate,

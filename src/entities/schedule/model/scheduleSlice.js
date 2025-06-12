@@ -57,6 +57,7 @@ export const deleteSchedule = createAsyncThunk(
 // --- SLICE ---
 const initialState = {
   schedules: [],
+  currentSchedule: null,
   loading: false,
   error: null,
 };
@@ -64,7 +65,16 @@ const initialState = {
 const scheduleSlice = createSlice({
   name: "schedules",
   initialState,
-  reducers: {},
+  reducers: {
+    // устанавливаем выбранное расписание
+    selectSchedule: (state, { payload }) => {
+      state.currentSchedule = payload;
+    },
+    // очищаем выбор
+    clearCurrentSchedule: state => {
+      state.currentSchedule = null;
+    }
+  },
   extraReducers: (builder) => {
     builder
       // ======== fetchSchedules ========
@@ -79,7 +89,7 @@ const scheduleSlice = createSlice({
           if (a.weekday !== b.weekday) {
             return a.weekday - b.weekday;
           }
-          
+
           // Затем по времени начала
           const timeA = new Date(`1970-01-01T${a.start_time}`);
           const timeB = new Date(`1970-01-01T${b.start_time}`);
@@ -89,6 +99,7 @@ const scheduleSlice = createSlice({
         state.schedules = sortedPayload.map(schedule => ({
           id: schedule.id,
           group_id: schedule.group_id,
+          group_name: schedule.Group.name,
           weekday: schedule.weekday,
           start_time: schedule.start_time,
           duration_minutes: schedule.duration_minutes,
@@ -121,7 +132,7 @@ const scheduleSlice = createSlice({
           active_from: newSchedule.active_from,
           active_to: newSchedule.active_to
         });
-        
+
         // Пересортировка после добавления
         state.schedules.sort((a, b) => {
           if (a.weekday !== b.weekday) return a.weekday - b.weekday;
@@ -129,7 +140,7 @@ const scheduleSlice = createSlice({
           const timeB = new Date(`1970-01-01T${b.start_time}`);
           return timeA - timeB;
         });
-        
+
         state.loading = false;
       })
       .addCase(addSchedule.rejected, (state, action) => {
@@ -145,7 +156,7 @@ const scheduleSlice = createSlice({
       .addCase(updateSchedule.fulfilled, (state, action) => {
         const updatedSchedule = action.payload;
         const index = state.schedules.findIndex(s => s.id === updatedSchedule.id);
-        
+
         if (index !== -1) {
           state.schedules[index] = {
             id: updatedSchedule.id,
@@ -157,7 +168,7 @@ const scheduleSlice = createSlice({
             active_from: updatedSchedule.active_from,
             active_to: updatedSchedule.active_to
           };
-          
+
           // Пересортировка после обновления
           state.schedules.sort((a, b) => {
             if (a.weekday !== b.weekday) return a.weekday - b.weekday;
@@ -166,7 +177,7 @@ const scheduleSlice = createSlice({
             return timeA - timeB;
           });
         }
-        
+
         state.loading = false;
       })
       .addCase(updateSchedule.rejected, (state, action) => {
@@ -191,9 +202,15 @@ const scheduleSlice = createSlice({
   }
 });
 
+export const {
+  selectSchedule,
+  clearCurrentSchedule
+} = scheduleSlice.actions;
+
 // Селекторы
-export const selectSchedules = (state) => state.schedules.schedules;
-export const selectSchedulesLoading = (state) => state.schedules.loading;
-export const selectSchedulesError = (state) => state.schedules.error;
+export const selectSchedules = (state) => state.schedule.schedules;
+export const selectSchedulesLoading = (state) => state.schedule.loading;
+export const selectSchedulesError = (state) => state.schedule.error;
+export const selectCurrentSchedule = state => state.schedule.currentSchedule;
 
 export default scheduleSlice.reducer;

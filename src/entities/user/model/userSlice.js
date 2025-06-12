@@ -2,20 +2,20 @@ import { createAsyncThunk, createSlice, } from "@reduxjs/toolkit";
 import { APIs } from "../../../shared";
 
 // ПОЛУЧИТЬ ВСЕХ ПОЛЬЗОВАТЕЛЕЙ ШКОЛЫ
-// export const fetchUsers = createAsyncThunk(
-//     "users/fetchUsers",
-//     async (_, { rejectWithValue }) => {
-//         try {
-//             const response = await APIs.user.getAllSchoolUsers(data)
-//             if (!response) {
-//                 throw new Error("Ошибка закрузки пользователей");
-//             }
-//             return await response.json();
-//         } catch (error) {
-//             return rejectWithValue(error.message)
-//         }
-//     }
-// );
+export const fetchUsers = createAsyncThunk(
+    "users/fetchUsers",
+    async (data, { rejectWithValue }) => {
+        try {
+            const response = await APIs.user.getSchoolUsersProfiles(data)
+            if (!response) {
+                throw new Error("Ошибка закрузки пользователей");
+            }
+            return await response.data;
+        } catch (error) {
+            return rejectWithValue(error.message)
+        }
+    }
+);
 
 export const registerAdminSchool = createAsyncThunk(
     "users/registerAdminSchool",
@@ -70,18 +70,18 @@ const userSlice = createSlice({
     extraReducers: builder => {
         builder
             // =================================== FETCH SCHOOL USERS
-            // .addCase(fetchUsers.pending, state => {
-            //     state.loading = true;
-            //     state.error = null;
-            // })
-            // .addCase(fetchUsers.fulfilled, (state, acion) => {
-            //     state.users = acion.payload;
-            //     state.loading = false;
-            // })
-            // .addCase(fetchUsers.rejected, (state, action) => {
-            //     state.error = action.payload;
-            //     state.loading = false;
-            // })
+            .addCase(fetchUsers.pending, state => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(fetchUsers.fulfilled, (state, acion) => {
+                state.schoolUsers = acion.payload;
+                state.loading = false;
+            })
+            .addCase(fetchUsers.rejected, (state, action) => {
+                state.error = action.payload;
+                state.loading = false;
+            })
 
             //  =================================== REGISTER ADMIN + SCHOOL
 

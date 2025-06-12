@@ -11,6 +11,8 @@ import schedule from '../../../shared/assets/icons/scheduleIcon.svg'
 import finance from '../../../shared/assets/icons/financeIcon.svg'
 import report from '../../../shared/assets/icons/reportsIcon.svg'
 import profile from '../../../shared/assets/icons/circle-user.svg'
+import school from '../../../shared/assets/icons/graduation-cap.svg'
+
 
 
 const roleBasedLinks = {
@@ -30,7 +32,7 @@ const roleBasedLinks = {
         { name: 'Профиль', href: '/profile', icon: <img alt='profile' src={profile} width="24px" /> },
     ],
     admin: [
-        { name: 'Школы', href: '/admin/schools' },
+        { name: 'Школы', href: '/admin/schools', icon: <img alt='school' src={school} width="24px" />},
         { name: 'Профиль', href: '/profile', icon: <img alt='profile' src={profile} width="24px" /> },
 
     ],

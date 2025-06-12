@@ -4,7 +4,7 @@ import { ProtectedRoute } from './hoc/ProtectedRoute';
 import {
   AuthenticationPage, Leads, Profile,
   AdminSchools, StudentsPage, Clients,
-  Shedule, Finances
+  Shedule, Finances, Report
 } from '../pages'
 import style from './styles.css'
 
@@ -27,6 +27,7 @@ function App() {
             <Route path='/clients' element={<ProtectedRoute roles={['manager', 'owner']}><Clients /></ProtectedRoute>} />
             <Route path='/schedule' element={<ProtectedRoute roles={['receptionist', 'teacher', 'owner']}><Shedule /></ProtectedRoute>} />
             <Route path='/finances' element={<ProtectedRoute roles={['accountant', 'owner']}><Finances /></ProtectedRoute>} />
+            <Route path='/reports' element={<ProtectedRoute roles={['accountant', 'owner']}><Report /></ProtectedRoute>} />
 
             {/* =================== admin =================== */}
 

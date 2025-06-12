@@ -1,5 +1,7 @@
 /* Footer.module.css */
 .footer {
+  font-family: 'involve-regular';
+
   box-sizing: border-box;
   position: fixed;
   bottom: 0;

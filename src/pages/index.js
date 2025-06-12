@@ -5,6 +5,7 @@ export { Clients } from './Clients'
 export { Shedule } from './Shedule'
 export { Profile } from './Profile'
 export { Finances } from './Finances'
+export { Report } from './Report'
 
 // =======================admin====================
 export { AdminSchools } from './admin'

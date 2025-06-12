@@ -11,12 +11,15 @@ export const SelectLong = ({ label, options, value, onChange, name, className })
         onChange={onChange}
         className={styles.select}
       >
+        <option value="" disabled hidden>
+        </option>
         {options.map(({ label, value }) => (
           <option key={value} value={value}>
             {label}
           </option>
         ))}
       </select>
+
     </div>
   )
 }

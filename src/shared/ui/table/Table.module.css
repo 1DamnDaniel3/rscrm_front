@@ -1,4 +1,6 @@
 .table {
+  font-family: 'involve-regular';
+
   width: 100%;
   overflow-x: auto;
   display: flex;
