@@ -6,6 +6,8 @@ export { Shedule } from './Shedule'
 export { Profile } from './Profile'
 export { Finances } from './Finances'
 export { Report } from './Report'
+export { Landing } from './Landing'
+
 
 // =======================admin====================
 export { AdminSchools } from './admin'

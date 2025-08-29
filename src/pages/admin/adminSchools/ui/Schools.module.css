@@ -8,6 +8,7 @@
 
 .schoolsPage {
     width: 100%;
+    padding-left: 155px;
     min-height: 100vh;
     height: auto;
     background-color: var(--color-bg);

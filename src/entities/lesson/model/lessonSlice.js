@@ -245,27 +245,8 @@ const lessonSlice = createSlice({
         state.generating = true;
         state.generateError = null;
       })
-      .addCase(generateLessons.fulfilled, (state, action) => {
-        const newLessons = action.payload;
-        
-        // Добавляем новые сгенерированные занятия к существующим
-        state.lessons = [
-          ...state.lessons,
-          ...newLessons.map(lesson => ({
-            id: lesson.id,
-            group_id: lesson.group_id,
-            direction_id: lesson.direction_id,
-            teacher_id: lesson.teacher_id,
-            start_time: lesson.start_time,
-            duration_minutes: lesson.duration_minutes,
-            is_canceled: lesson.is_canceled,
-            school_id: lesson.school_id,
-            group_name: lesson.Group?.name || '',
-            dance_style: lesson.DanceStyle?.name || '',
-            teacher_name: lesson.UserAccount?.UserProfile?.full_name || ''
-          }))
-        ].sort((a, b) => new Date(a.start_time) - new Date(b.start_time));
-        
+      // В extraReducers
+      .addCase(generateLessons.fulfilled, (state) => {
         state.generating = false;
       })
       .addCase(generateLessons.rejected, (state, action) => {

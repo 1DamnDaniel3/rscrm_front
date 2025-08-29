@@ -2,9 +2,9 @@ import { Route, Routes } from 'react-router-dom';
 import { AuthProvider, ThemeProvider } from './context'
 import { ProtectedRoute } from './hoc/ProtectedRoute';
 import {
-  AuthenticationPage, Leads, Profile,
+  Landing, AuthenticationPage, Leads, Profile,
   AdminSchools, StudentsPage, Clients,
-  Shedule, Finances, Report
+  Shedule, Finances, Report, 
 } from '../pages'
 import style from './styles.css'
 
@@ -16,12 +16,11 @@ function App() {
 
           <Routes>
             {/* roles = 'owner' | 'manager' | 'admin' | 'receptionist'| 'teacher' | 'accountant'  */}
+            <Route path='/' element={<Landing />} />
             <Route path='/registration' element={<AuthenticationPage />} />
-
 
             <Route path='/profile' element={<ProtectedRoute roles={['admin', 'owner', 'manager',
               'receptionist', 'teacher', 'accountant']}><Profile /></ProtectedRoute>} />
-
             <Route path='/leads' element={<ProtectedRoute roles={['manager', 'owner']}><Leads /></ProtectedRoute>} />
             <Route path='/students' element={<ProtectedRoute roles={['manager', 'owner']}><StudentsPage /></ProtectedRoute>} />
             <Route path='/clients' element={<ProtectedRoute roles={['manager', 'owner']}><Clients /></ProtectedRoute>} />

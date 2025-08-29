@@ -1,0 +1,70 @@
+.wrapper {
+  position: relative;
+  margin-top: 50px;
+  padding: 20px;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: 'involve-regular', sans-serif;
+}
+.title {
+  font-family: 'involve-regular', sans-serif;
+  font-size: 16px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: 20px;
+}
+
+.aboveTableActions {
+  position: absolute;
+  top: 100px; /* скорректируй по необходимости */
+  left: 50%;
+  transform: translateX(-50%);
+  transform: translateY(-25px);
+  z-index: 0;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.table {
+  position: relative;
+  z-index: 1;
+
+  width: 100%;
+  border-collapse: collapse;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+}
+
+.table th,
+.table td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid var(--color-border);
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.table th {
+  background-color: var(--color-muted);
+  color: var(--color-text);
+  font-weight: normal;
+}
+
+.actionsCell {
+  text-align: center;
+}
+
+.deleteBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  color: var(--color-text);
+}
+
+.deleteBtn:hover {
+  color: var(--color-accent);
+}

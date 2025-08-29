@@ -5,7 +5,7 @@ export {
     IconButton, NavigationPanel,
     Button, EditableText,
     Footer, HeroBlock, SelectLong, SelectShort,
-    Tag, Calendar, Modal
+    Tag, Calendar, Modal, AttendanceList
 } from './ui'
 export {
     formatDate, formatDateTime, normalizeToInputDate,

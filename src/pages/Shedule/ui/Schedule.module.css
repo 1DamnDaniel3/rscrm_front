@@ -2,3 +2,12 @@
     padding: 0 55px 0 155px;
     margin-bottom: 100px;
 }
+
+.title {
+  font-family: 'involve-regular', sans-serif;
+  font-size: 16px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: 20px;
+  padding-left: 150px;
+}

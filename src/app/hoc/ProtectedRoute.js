@@ -12,7 +12,7 @@ export const ProtectedRoute = ({ children, roles = [] }) => {
     }
 
     if (!user) {
-        return null;
+        return <Navigate to="/registration" replace />;
     }
 
     if (user.role === 'admin') {

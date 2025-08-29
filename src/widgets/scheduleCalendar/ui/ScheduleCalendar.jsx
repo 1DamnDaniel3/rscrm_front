@@ -1,8 +1,8 @@
 // src/features/schedule/ScheduleCalendar.jsx
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Calendar, Modal, Loader } from '../../../shared';
+import { Calendar, Modal, Loader, AttendanceList } from '../../../shared';
 import { format } from 'date-fns';
 
 import {
@@ -14,7 +14,8 @@ import {
   selectGeneratingLessons,
   selectGenerateError,
   chooseLesson,
-  clearCurrentLesson
+  clearCurrentLesson,
+  generateLessons
 } from '../../../entities';
 
 import { selectUser } from '../../../entities';
@@ -29,12 +30,24 @@ export const ScheduleCalendar = () => {
   const selected = useSelector(selectCurrentLesson);
   const user = useSelector(selectUser);
 
-  // Загрузка уроков
+  const hasGeneratedRef = useRef(false);
+
   useEffect(() => {
     const schoolId = user.school_id === "null" ? null : user.school_id;
-    if (schoolId) {
-      dispatch(fetchLessons(schoolId));
-    }
+    if (!schoolId) return;
+
+    // если уже сгенерировали — больше не вызываем
+    if (hasGeneratedRef.current) return;
+    hasGeneratedRef.current = true;
+
+    dispatch(generateLessons(schoolId))
+      .unwrap()
+      .then(() => dispatch(fetchLessons(schoolId)))
+      .catch(err => {
+        // здесь можно «проглотить» ошибку уникального индекса
+        console.warn('GenerateLessons error (можно игнорировать дубликаты):', err);
+        return dispatch(fetchLessons(schoolId));
+      });
   }, [dispatch, user?.school_id]);
 
   // Преобразуем lessons в события только с Date внутри компонента календаря
@@ -60,8 +73,8 @@ export const ScheduleCalendar = () => {
   return (
     <>
       {(loading || generating) && <Loader />}
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      {generateError && <p style={{ color: 'red' }}>{generateError}</p>}
+      {error && <p style={{ color: 'red' }}>{error}</p>} 
+      {/* {generateError && <p style={{ color: 'red' }}>{generateError}</p>} ====== !!!!!!!!!! ТРЕБУЕТСЯ ФИКС ПРОЦЕССА ГЕНЕРАЦИИ !!!!!!!!*/}
 
       <Calendar
         events={events}
@@ -93,6 +106,7 @@ export const ScheduleCalendar = () => {
             </div>
           );
         })()}
+        <AttendanceList/>
       </Modal>
     </>
   );
