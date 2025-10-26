@@ -2,11 +2,14 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { APIs } from "../../../shared";
 import { setCurrentUser } from "../../../entities";
 
+// Ожидает всю информацию о профиле пользователя в ответ на логин.
+// Либо должен делать их сам.
 export const login = createAsyncThunk(
   'auth/login',
   async ({ email, password }, { dispatch, rejectWithValue }) => {
     try {
       const response = await APIs.user.loginUser({ email, password });
+
       const accountData = response.data.user;
       
       const profile = await APIs.user.setUserProfile(accountData.id)
@@ -17,8 +20,7 @@ export const login = createAsyncThunk(
 
       return response.data;
     } catch (error) {
-      const serverMessage = error.response?.data?.message || "Ошибка входа";
-      return rejectWithValue(serverMessage);
+      return rejectWithValue(error.message);
     }
   }
 );
@@ -37,7 +39,7 @@ export const logout = createAsyncThunk(
     }
   }
 )
-
+// Ходит на сервер и проверяет валиден ли токен, приносит user'а и заполняет redux.
 export const checkAuth = createAsyncThunk(
   'auth/checkAuth',
   async (_, { dispatch, rejectWithValue }) => {
@@ -45,7 +47,7 @@ export const checkAuth = createAsyncThunk(
       const response = await APIs.user.authCheck();
       if (!response) throw new Error(response.message || 'Ошибка');
 
-      dispatch(setCurrentUser(response.data.user));
+      dispatch(setCurrentUser(response.data.user)); // вот тут мы восстанавливаем пользователя
       return response.data;
     } catch (error) {
       return rejectWithValue(error.message);

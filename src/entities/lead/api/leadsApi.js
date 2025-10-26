@@ -2,8 +2,8 @@ import {api} from '../../../shared'
 
 
 export const leadsApi = {
-    getSchoolLeads: async (data) => api.post('/leads/getAllWhere', data),
-    addSchoolLead: async(data) => api.post('/leads/registration', data),
-    deleteLead: async (id) => api.delete(`/leads/${id}`),
-    updateLead: async (id, data) => api.put(`/leads/${id}`, data),
+    getAllLeadsWhere: async (data) => api.post('/leads/getallwhere', data),
+    addSchoolLead: async(data) => api.post('/leads/create', data),
+    deleteLead: async (id) => api.delete(`/leads/delete/${id}`),
+    updateLead: async (id, data) => api.patch(`/leads/update/${id}`, data),
 }

@@ -10,10 +10,24 @@ export const RegisterForm = ({ setIsLoggin }) => {
 
     const OnSubmit = (e) => {
         e.preventDefault();
-        handleLoginSubmit({ state, dispatchLocal, registerUser })
-        dispatchLocal({type: 'SET_USER_EMAIL'})
+        const rightDate = state.profile.birthdate
+    ? new Date(state.profile.birthdate).toISOString()
+    : null;
+
+     // создаём обновлённый объект
+      const updatedState = {
+        ...state,
+        profile: {
+          ...state.profile,
+          birthdate: rightDate,
+        },
+      };
+
+        handleLoginSubmit({ state: updatedState, dispatchLocal, registerUser })
         setIsLoggin(true)
     }
+
+    
 
     return (
         <form onSubmit={OnSubmit} className={s.form}>

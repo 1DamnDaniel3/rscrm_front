@@ -7,7 +7,9 @@ export const handleLoginSubmit = async ({ state, dispatchLocal, dispatch, naviga
     dispatchLocal({ type: 'CLEAR_FORM' });
     navigate('/profile')
   } catch (error) {
+    const message = error?.message || error || 'Неизвестная ошибка';
     dispatchLocal({ type: 'SET_ERROR', payload: error });
+    throw message;
   } finally {
     dispatchLocal({ type: 'STOP_LOADING' });
   }

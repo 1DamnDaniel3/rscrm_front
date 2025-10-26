@@ -43,19 +43,19 @@ export const Profile = () => {
             <h2 className={s["section-title"]}>Школа</h2>
             <div className={s["info-row"]}>
               <div className={s.label}>Название:</div>
-              <div className={s.value}>{school.name}</div>
+              <div className={s.value}>{school.Name}</div>
             </div>
             <div className={s["info-row"]}>
               <div className={s.label}>Город:</div>
-              <div className={s.value}>{school.city}</div>
+              <div className={s.value}>{school.City}</div>
             </div>
             <div className={s["info-row"]}>
               <div className={s.label}>Email школы:</div>
-              <div className={s.value}>{school.email}</div>
+              <div className={s.value}>{school.Email}</div>
             </div>
             <div className={s["info-row"]}>
               <div className={s.label}>Телефон:</div>
-              <div className={s.value}>{school.phone}</div>
+              <div className={s.value}>{school.Phone}</div>
             </div>
           </div>
         )}

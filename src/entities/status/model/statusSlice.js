@@ -7,7 +7,7 @@ export const fetchStatuses = createAsyncThunk(
     'statuses/fetchStatuses',
     async (data, { rejectWithValue }) => {
         try {
-            const response = await APIs.status.getSchoolStatuses(data);
+            const response = await APIs.status.getAllStatusesWhere(data);
             return response.data;
         } catch (error) {
             const serverMessage = error.response?.data?.message || 'server error';

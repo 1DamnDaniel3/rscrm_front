@@ -14,12 +14,11 @@ export const LoginForm = () => {
   const navigate = useNavigate()
 
   const onSubmit = async (e) => {
+    e.preventDefault();
     try {
-      e.preventDefault();
-      handleLoginSubmit({ state, dispatchLocal, dispatch, navigate });
-      
+      await handleLoginSubmit({ state, dispatchLocal, dispatch, navigate });
     } catch (error) {
-      console.log(error.message)
+      console.log(error)
     }
 
 
@@ -47,7 +46,7 @@ export const LoginForm = () => {
       <button type="submit" disabled={state.loading} className={s.button}>
         {state.loading ? 'Загрузка...' : 'Войти'}
       </button>
-      {state.error && <div className={s.error}>{state.error}</div>}
+      {state.error && <div className={s.error}>{`Ошибка входа`}</div>}
     </form>
 
 

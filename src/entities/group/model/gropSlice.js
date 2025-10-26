@@ -83,7 +83,8 @@ const groupSlice = createSlice({
         state.error = null;
       })
       .addCase(fetchGroups.fulfilled, (state, action) => {
-        const sortedGroups = [...action.payload].sort((a, b) => a.id - b.id);
+        const payload = action.payload ?? []
+        const sortedGroups = [...payload].sort((a, b) => a.id - b.id);
         state.groups = sortedGroups;
         state.loading = false;
 

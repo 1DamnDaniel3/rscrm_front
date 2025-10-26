@@ -6,6 +6,10 @@ import { selectUser } from '../../entities';
 export const ProtectedRoute = ({ children, roles = [] }) => {
     const isAuth = useSelector(selectIsAuth);
     const user = useSelector(selectUser);
+    if (user == null) {
+     console.warn('user undefined. do not loaded to redux');
+    }
+
 
     if (!isAuth) {
         return <Navigate to="/registration" replace />;

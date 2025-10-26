@@ -7,7 +7,7 @@ export const fetchLeads = createAsyncThunk(
     'leads/fetchLeads',
     async (school_id, { rejectWithValue }) => {
         try {
-            const response = await APIs.lead.getSchoolLeads(school_id);
+            const response = await APIs.lead.getAllLeadsWhere({"school_id": school_id});
             return response.data;
         } catch (error) {
             const serverMessage = error.response?.data?.message || 'server error';

@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 
 export const AuthContext = createContext(null);
 
-
+// при первом рендере, если состояние isAuth == false делает запрос к checkAuth,
 export const AuthProvider = ({ children }) => {
     const [isInitialized, setIsInitialized] = useState(false);
     const isAuth = useSelector(selectIsAuth);
@@ -17,21 +17,24 @@ export const AuthProvider = ({ children }) => {
     const dispatch = useDispatch()
 
     const userLogout = useCallback(() => dispatch(logout()), [dispatch]);
+    
 
     useEffect(() => {
-
-        const checkingAuth = async () => {
-            try {
-                await dispatch(checkAuth()).unwrap();
-            } catch (error) {
-                console.log(error);
-                await userLogout();
-            } finally {
-                setIsInitialized(true);
-            }
-        };
-        checkingAuth();
-    }, [dispatch, navigate, userLogout]);
+        if(!isAuth){
+            const checkingAuth = async () => {
+                try {
+                    await dispatch(checkAuth()).unwrap();
+                } catch (error) {
+                    console.log(error);
+                    await userLogout();
+                } finally {
+                    setIsInitialized(true);
+                }
+            };
+            checkingAuth();
+        }
+        
+    }, [isAuth, dispatch, navigate, userLogout]);
 
 
     const value = { isAuthenticated: isAuth, user }
