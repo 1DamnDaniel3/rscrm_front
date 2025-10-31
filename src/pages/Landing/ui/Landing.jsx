@@ -7,7 +7,7 @@ export const Landing = () => {
     const navigate = useNavigate();
     return(
         <div>
-            <HeroBlock heroTitle={"There is a lending, believe!"}/>
+            <HeroBlock heroTitle={"Тут будет красивый лендинг!"}/>
             <ButtonLink text={"К регистрации! "} onClick={()=>{navigate("/registration")}}/>
         </div>
     )
