@@ -1,5 +1,5 @@
 import s from './Landing.module.css'
-import { HeroBlock, ButtonLink} from '../../../shared'
+import { HeroBlock, ButtonLink, Loader} from '../../../shared'
 import { useNavigate } from 'react-router-dom'
 
 
