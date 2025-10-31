@@ -1,17 +1,18 @@
-pipeline{
+pipeline {
     agent any
-    
-    environment{
+    environment {
         PROJECT_DIR = '/srv/developers/src/rscrm'
     }
-    stages{
-        stage('Deploy'){
-            steps{
-                dir("${PROJECT_DIR}/rscrm_front"){
-                    sh 'git pull'
-                }
-                dir("${PROJECT_DIR}"){
-                    sh 'docker compose up -d --build frontend'
+    stages {
+        stage('Deploy') {
+            steps {
+                dir("${env.WORKSPACE}") {
+                    sh """
+                    cd ${PROJECT_DIR}/rscrm_front
+                    git pull
+                    cd ${PROJECT_DIR}
+                    docker compose up -d --build frontend
+                    """
                 }
             }
         }
