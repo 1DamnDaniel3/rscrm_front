@@ -3,13 +3,14 @@ import {
     userReducer, leadsReducer, groupReducer,
     statusReducer, sourceReducer, studentReducer,
     clientReducer, scheduleReducer, lessonReducer,
-    styleReducer
+    styleReducer, profileReducer
 } from '../entities'
 import { authReducer, modalReducer } from '../features'
 
 export const store = configureStore({
     reducer: {
         users: userReducer,
+        profiles: profileReducer,
         auth: authReducer,
 
         leads: leadsReducer,

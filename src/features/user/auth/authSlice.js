@@ -3,17 +3,20 @@ import { APIs } from "../../../shared";
 import { setCurrentUser } from "../../../entities";
 
 // Ожидает всю информацию о профиле пользователя в ответ на логин.
-// Либо должен делать их сам.
+// Либо должен собрать её сам.
 export const login = createAsyncThunk(
   'auth/login',
   async ({ email, password }, { dispatch, rejectWithValue }) => {
     try {
       const response = await APIs.user.loginUser({ email, password });
 
-      const accountData = response.data.user;
+      const accountData = response.data?.user;
+      const roles = response.data?.roles
       
-      const profile = await APIs.user.setUserProfile(accountData.id)
-      const fullUser = {...accountData, profile: profile.data}
+      const profile = await APIs.profile.getAllWhere({account_id: accountData.id})
+      const fullUser = {...accountData, profile: profile.data, roles: roles}
+
+      console.log(response)
 
       dispatch(setCurrentUser(fullUser));
 
@@ -45,9 +48,9 @@ export const checkAuth = createAsyncThunk(
   async (_, { dispatch, rejectWithValue }) => {
     try {
       const response = await APIs.user.authCheck();
-      if (!response) throw new Error(response.message || 'Ошибка');
+      if (!response) throw new Error(response.message || 'check auth error');
 
-      dispatch(setCurrentUser(response.data.user)); // вот тут мы восстанавливаем пользователя
+      dispatch(setCurrentUser(response.data.user)); 
       return response.data;
     } catch (error) {
       return rejectWithValue(error.message);

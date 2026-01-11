@@ -5,12 +5,25 @@ export {
     selectSchoolUsers, selectUser, selectUsersLoading, selectUsersError,
     registerAdminSchool,
 } from './user'
+
+// ========================== profile =======================
+
+export {
+    profileApi,
+    profileReducer,
+    selectProfile, selectSchoolProfiles, selectProfilesError, selectProfilesLoading, 
+    fetchProfiles
+} from './profile'
+
+
 // ========================== lead ==========================
 export {
-    leadsReducer, fetchLeads, deleteLead, updateLead, addLead,
+    leadsReducer,
+    fetchLeads, groupedLeads, deleteLead, updateLead, addLead,
     selectLeads, selectLoadLeads, selectErrorLeads,
     leadsApi,
 } from './lead'
+
 // ========================== student ==========================
 export {
     studentApi,
@@ -57,7 +70,7 @@ export { SchoolCard, schoolsApi } from './school'
 // ========================== status ==========================
 export {
     fetchStatuses, addStatus, updateStatus, deleteStatus,
-    statusReducer, selectErrorStatuses, selectLoadStatuses, selectStatuses,
+    statusReducer, selectErrorStatuses, selectLoadStatuses, selectStatuses, selectStatusesByid,
     statusApi
 } from './status'
 
@@ -66,7 +79,7 @@ export {
 export {
     sourceApi,
     sourceReducer,
-    selectSources, selectSourcesLoading, selectSourcesError,
+    selectSources, selectSourcesLoading, selectSourcesError, selectSourcesById,
     fetchSources, createSource, updateSource, deleteSource,
 } from './source'
 // ========================== group ==========================

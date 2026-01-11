@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSelector, createSlice } from "@reduxjs/toolkit";
 import { APIs } from "../../../shared";
 
 // ======================= Thunks =======================
@@ -7,7 +7,7 @@ export const fetchStatuses = createAsyncThunk(
     'statuses/fetchStatuses',
     async (data, { rejectWithValue }) => {
         try {
-            const response = await APIs.status.getAllStatusesWhere(data);
+            const response = await APIs.status.getAllWhere(data);
             return response.data;
         } catch (error) {
             const serverMessage = error.response?.data?.message || 'server error';
@@ -58,7 +58,8 @@ export const deleteStatus = createAsyncThunk(
 // ======================= Slice =======================
 
 const initialState = {
-    statuses: [],
+    statusesById: {},
+    statusesAllIds: [],
     loading: false,
     error: null,
 };
@@ -75,7 +76,21 @@ const statusSlice = createSlice({
                 state.error = null;
             })
             .addCase(fetchStatuses.fulfilled, (state, action) => {
-                state.statuses = action.payload;
+
+                const payload = action.payload.data;
+
+                const allIds = [];
+                const byId = {};
+
+                payload?.map(status => {
+                    byId[status.id] = status
+                    allIds.push(status.id)
+                });
+
+                state.statusesById = byId;
+                state.statusesAllIds = allIds;
+
+
                 state.loading = false;
             })
             .addCase(fetchStatuses.rejected, (state, action) => {
@@ -132,7 +147,13 @@ const statusSlice = createSlice({
 
 // ======================= Selectors =======================
 
-export const selectStatuses = (state) => state.statuses.statuses;
+export const selectStatuses = createSelector(
+    [
+        (state) => state.statuses.statusesAllIds,
+        (state) => state.statuses.statusesById,
+    ], (ids, entities) => ids.map(id => entities[id])
+);
+export const selectStatusesByid = (state) => state.statuses.statusesById;
 export const selectLoadStatuses = (state) => state.statuses.loading;
 export const selectErrorStatuses = (state) => state.statuses.error;
 

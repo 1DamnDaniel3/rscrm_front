@@ -10,6 +10,7 @@ import cn from 'classnames';
 import plus from '../../../shared/assets/icons/plusIcon.svg';
 import s from './GroupFooter.module.css';
 
+// Виджет, включающий кнопки групп и кнопку добавления групп. Фильтрует группы по school_id и entity_type
 export const GroupFooter = ({ entity_type }) => {
     const dispatch = useDispatch();
     const groups = useSelector(selectGroups)
@@ -22,18 +23,13 @@ export const GroupFooter = ({ entity_type }) => {
         school_id: user.school_id,
     }
 
-    useEffect(() => {
-
-        const schoolId = user.school_id === "null" ? null : user.school_id;
-        if (schoolId) {
-            dispatch(fetchGroups({ school_id: schoolId, entity_type }))
-        }
-    }, [dispatch, user.school_id]);
     const handleSelectGroup = (group_id) => { dispatch(setSelectedGroupId(group_id)) };
     const handleAddGroup = (data) => { dispatch(addGroup(data)) }; //onClick={handleAddGroup(defaultAddData)}
 
-    const label = "Удалить"
+    
     return (
+
+        
         <div className={s.groupFooter}>
 
             <Footer>

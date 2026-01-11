@@ -1,13 +1,15 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSelector, createSlice } from "@reduxjs/toolkit";
 import { APIs } from "../../../shared";
+import { act } from "react";
 
 // --- THUNKS ---
 
+// Лиды с фильтром
 export const fetchLeads = createAsyncThunk(
     'leads/fetchLeads',
-    async (school_id, { rejectWithValue }) => {
+    async (data, { rejectWithValue }) => {
         try {
-            const response = await APIs.lead.getAllLeadsWhere({"school_id": school_id});
+            const response = await APIs.lead.getAllLeadsWhere(data);
             return response.data;
         } catch (error) {
             const serverMessage = error.response?.data?.message || 'server error';
@@ -55,10 +57,28 @@ export const addLead = createAsyncThunk(
     }
 );
 
-// --- SLICE ---
+// ----================================ Filtered Leads ================================----
+
+// Сгруппированные лиды
+export const groupedLeads = createAsyncThunk(
+    'leads/groupedLeads',
+    async (data, {rejectWithValue}) =>{
+        try{
+            const responce = await APIs.lead.getGroupedLeads(data);
+            return responce.data;
+        } catch(error){
+            const serverMessage = error.response?.data?.message || 'server error';
+            return rejectWithValue(serverMessage);
+        }
+        
+    }
+)
+
+// ------------------------------------------------------- SLICE -------------------------------------------
 
 const initialState = {
-    leads: [],
+    byId: {},
+    allIds: [],
     loading: false,
     error: null,
 };
@@ -76,28 +96,21 @@ const leadSlice = createSlice({
                 state.error = null;
             })
             .addCase(fetchLeads.fulfilled, (state, action) => {
-                // Сортируем полученный массив по убыванию id
-                const sortedPayload = action.payload.slice().sort((a, b) => {
-                    const idA = typeof a.id === 'string' ? Number(a.id) : a.id;
-                    const idB = typeof b.id === 'string' ? Number(b.id) : b.id;
-                    return idB - idA; 
+                
+                const leadsArray = action.payload?.data || [];
+
+                const ById = {};
+                const AllIds = [];
+
+                leadsArray.forEach(lead => {
+                    ById[lead.id] = lead
+                    AllIds.push(lead.id)
                 });
 
-                state.leads = sortedPayload.map(lead => ({
-                    id: lead.id,
-                    name: lead.name,
-                    phone: lead.phone,
-                    trial_date: lead.trial_date,
-                    qualification: lead.qualification,
-                    created_at: lead.created_at,
-                    converted_to_client_at: lead.converted_to_client_at,
-                    source_id: lead.Source?.id || '',
-                    source_name: lead.Source?.name || '',
-                    status_id: lead.Status?.id || '',
-                    status_name: lead.Status?.name || '',
-                    created_by: lead.UserAccount?.UserProfile?.full_name || '',
-                    groups: lead.Groups || []
-                }));
+                AllIds.sort((a, b) => b - a);
+
+                state.byId = ById;
+                state.allIds = AllIds;
 
                 state.loading = false;
             })
@@ -112,14 +125,14 @@ const leadSlice = createSlice({
                 state.error = null;
             })
             .addCase(deleteLead.fulfilled, (state, action) => {
-                let deletedId;
-                if (action.payload && typeof action.payload === 'object' && 'id' in action.payload) {
-                    deletedId = action.payload.id;
-                } else {
-                    deletedId = action.payload;
+                const deletedID = action.payload.id;
+                if(!deletedID) return;
+
+                delete state.byId[deletedID];
+                if (state.allIds){
+                    state.allIds = state.allIds.filter(id => id !== deletedID);
                 }
-                deletedId = typeof deletedId === 'string' ? Number(deletedId) : deletedId;
-                state.leads = state.leads.filter(lead => lead.id !== deletedId);
+
                 state.loading = false;
                 state.error = null;
             })
@@ -134,67 +147,16 @@ const leadSlice = createSlice({
                 state.error = null;
             })
             .addCase(updateLead.fulfilled, (state, action) => {
-                state.loading = false;
-                state.error = null;
+                const id = action.payload.id;
 
-                const updated = action.payload;
-                const updatedId = typeof updated.id === 'string'
-                    ? Number(updated.id)
-                    : updated.id;
-
-                const idx = state.leads.findIndex(l => l.id === updatedId);
-                if (idx < 0) {
-                    state.leads.push({
-                        id: updatedId,
-                        name: updated.name,
-                        phone: updated.phone,
-                        trial_date: updated.trial_date,
-                        qualification: updated.qualification,
-                        created_at: updated.created_at,
-                        converted_to_client_at: updated.converted_to_client_at,
-                        source_id: updated.Source?.id ?? null,
-                        source_name: updated.Source?.name || '',
-                        status_id: updated.Status?.id ?? null,
-                        status_name: updated.Status?.name || '',
-                        created_by: updated.UserAccount?.UserProfile?.full_name || '',
-                        groups: updated?.Groups || []
-                    });
-                } else {
-                    const existing = state.leads[idx];
-
-                    existing.name = updated.name;
-                    existing.phone = updated.phone;
-                    existing.trial_date = updated.trial_date;
-                    existing.qualification = updated.qualification;
-                    existing.created_at = updated.created_at;
-                    existing.converted_to_client_at = updated.converted_to_client_at;
-
-                    const newSourceId = updated.Source?.id != null
-                        ? (typeof updated.Source.id === 'string' ? Number(updated.Source.id) : updated.Source.id)
-                        : null;
-                    if (newSourceId !== null && newSourceId !== existing.source_id) {
-                        existing.source_id = newSourceId;
-                        existing.source_name = updated.Source?.name ?? existing.source_name;
-                    }
-
-                    const newStatusId = updated.Status?.id != null
-                        ? (typeof updated.Status.id === 'string' ? Number(updated.Status.id) : updated.Status.id)
-                        : null;
-                    if (newStatusId !== null && newStatusId !== existing.status_id) {
-                        existing.status_id = newStatusId;
-                        existing.status_name = updated.Status?.name ?? existing.status_name;
-                    }
-
-                    const newCreator = updated.UserAccount?.UserProfile?.full_name;
-                    if (newCreator) {
-                        existing.created_by = newCreator;
-                    }
+                if (state.byId[id]){
+                    state.byId = {...state.byId[id], ...action.payload}
                 }
+                state.loading = false;
             })
             .addCase(updateLead.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
-                alert(action.payload);
             })
 
             // ======== addLead ========
@@ -203,47 +165,59 @@ const leadSlice = createSlice({
                 state.error = null;
             })
             .addCase(addLead.fulfilled, (state, action) => {
-                // Сбрасываем флаг загрузки
+                const newLead = action.payload;
+                state.byId[newLead.id] = newLead
+                if (!state.allIds.includes(newLead.id)){
+                    state.allIds.push(newLead.id)
+                }
+
                 state.loading = false;
-                state.error = null;
-
-                const lead = action.payload;
-                const newId = typeof lead.id === 'string' ? Number(lead.id) : lead.id;
-
-                // Добавляем новый лид, а затем сортируем весь список по убыванию id
-                state.leads.push({
-                    id: newId,
-                    name: lead.name,
-                    phone: lead.phone,
-                    trial_date: lead.trial_date,
-                    qualification: lead.qualification,
-                    created_at: lead.created_at,
-                    converted_to_client_at: lead.converted_to_client_at,
-                    source_id: lead.Source?.id ?? null,
-                    source_name: lead.Source?.name ?? '',
-                    status_id: lead.Status?.id ?? null,
-                    status_name: lead.Status?.name ?? '',
-                    created_by: lead.UserAccount?.UserProfile?.full_name ?? '',
-                    groups: lead.Groups || []
-                });
-
-                // Сортируем по убыванию id (новые наверху)
-                state.leads.sort((a, b) => {
-                    const idA = typeof a.id === 'string' ? Number(a.id) : a.id;
-                    const idB = typeof b.id === 'string' ? Number(b.id) : b.id;
-                    return idB - idA;
-                });
             })
             .addCase(addLead.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
-                alert(action.payload);
+            })
+
+            // ---================== Filtered ==================---
+
+            .addCase(groupedLeads.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(groupedLeads.fulfilled, (state, action) => {
+                
+                const leadsArray = action.payload?.data || [];
+
+                const ById = {};
+                const AllIds = [];
+
+                leadsArray.forEach(lead => {
+                    ById[lead.id] = lead
+                    AllIds.push(lead.id)
+                });
+
+                AllIds.sort((a, b) => b - a);
+
+                state.byId = ById;
+                state.allIds = AllIds;
+
+                state.loading = false;
+            })
+            .addCase(groupedLeads.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
             });
+
     }
 });
 
-
-export const selectLeads = (state) => state.leads.leads;
+export const selectLeads = createSelector(
+    [
+        (state) => state.leads.allIds,
+        (state) => state.leads.byId,
+    ],
+    (ids, entities) => ids.map(id => entities[id])
+);
 export const selectLoadLeads = (state) => state.leads.loading;
 export const selectErrorLeads = (state) => state.leads.error;
 

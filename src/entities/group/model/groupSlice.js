@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSelector, createSlice } from '@reduxjs/toolkit';
 import { APIs } from '../../../shared';
 
 // ====== async thunks ======
@@ -8,7 +8,7 @@ export const fetchGroups = createAsyncThunk(
   async ({ school_id, entity_type }, { rejectWithValue }) => {
     try {
       const response = await APIs.group.getAllGroupsWhere({ school_id, entity_type });
-      return response.data;
+      return response.data
     } catch (error) {
       const message = error.response?.data?.message || 'Server error';
       return rejectWithValue(message);
@@ -21,7 +21,7 @@ export const deleteGroup = createAsyncThunk(
   async (group_id, { rejectWithValue }) => {
     try {
       const response = await APIs.group.deleteGroup(group_id);
-      return response.data;
+      return response.data
     } catch (error) {
       const message = error.response?.data?.message || 'Server error';
       return rejectWithValue(message);
@@ -34,7 +34,7 @@ export const updateGroup = createAsyncThunk(
   async ({ group_id, data }, { rejectWithValue }) => {
     try {
       const response = await APIs.group.updateGroup(group_id, data);
-      return response.data;
+      return {...response.data, id: Number(response.data.id)}; // приведение id к int
     } catch (error) {
       const message = error.response?.data?.message || 'Server error';
       return rejectWithValue(message);
@@ -58,7 +58,8 @@ export const addGroup = createAsyncThunk(
 // ====== initial state ======
 
 const initialState = {
-  groups: [],
+  groups: {},
+  allIds: [],
   selectedGroupId: null,
   loading: false,
   error: null,
@@ -83,16 +84,23 @@ const groupSlice = createSlice({
         state.error = null;
       })
       .addCase(fetchGroups.fulfilled, (state, action) => {
-        const payload = action.payload ?? []
-        const sortedGroups = [...payload].sort((a, b) => a.id - b.id);
-        state.groups = sortedGroups;
+        const groupsArray = action.payload?.data || [];
+
+        const groupsById = {};
+        const AllIds = [];
+
+        groupsArray.forEach(group => {
+          groupsById[group.id] = group;
+          AllIds.push(group.id)
+        });
+
+        AllIds.sort((a, b) => a - b);
+
+        state.groups = groupsById;
+        state.allIds = AllIds;
         state.loading = false;
 
-        if (sortedGroups.length > 0) {
-          state.selectedGroupId = sortedGroups[0].id;
-        } else {
-          state.selectedGroupId = null;
-        }
+        state.selectedGroupId = AllIds.length > 0 ? AllIds[0] : null
       })
       .addCase(fetchGroups.rejected, (state, action) => {
         state.loading = false;
@@ -105,10 +113,17 @@ const groupSlice = createSlice({
         state.error = null;
       })
       .addCase(deleteGroup.fulfilled, (state, action) => {
-        const deletedId = typeof action.payload.id === 'string' ? Number(action.payload.id) : action.payload.id;
-        state.groups = state.groups
-          .filter(group => group.id !== deletedId)
-          .sort((a, b) => a.id - b.id);
+        const deletedID = action.payload.id;
+        if (!deletedID) return;
+        
+        // clear the states
+        delete state.groups[deletedID];
+        state.allIds = state.allIds.filter(id => id !== deletedID);
+      
+        if (state.selectedGroupId === deletedID){
+          state.selectedGroupId = state.allIds.length > 0? state.allIds[0] : null
+        }
+
         state.loading = false;
         state.error = null;
       })
@@ -123,12 +138,11 @@ const groupSlice = createSlice({
         state.error = null;
       })
       .addCase(updateGroup.fulfilled, (state, action) => {
-        state.groups = state.groups
-          .map((g) =>
-            g.id === action.payload.id ? { ...g, ...action.payload } : g
-          )
-          .sort((a, b) => a.id - b.id);
-        state.loading = false;
+        const id = action.payload.id;
+        if (state.groups[id]){
+          state.groups[id] = {...state.groups[id], ...action.payload};
+        }
+        state.loading = false
       })
       .addCase(updateGroup.rejected, (state, action) => {
         state.loading = false;
@@ -142,8 +156,13 @@ const groupSlice = createSlice({
       })
       .addCase(addGroup.fulfilled, (state, action) => {
         const newGroup = action.payload;
-        state.groups = [...state.groups, newGroup].sort((a, b) => a.id - b.id);
-        state.selectedGroupId = newGroup.id;
+
+        state.groups[newGroup.id] = newGroup; // add to groups
+          if (!state.allIds.includes(newGroup.id)) { // add to Ids
+            state.allIds.push(newGroup.id);
+          }
+        state.selectedGroupId = newGroup.id; // select newGroup
+
         state.loading = false;
       })
       .addCase(addGroup.rejected, (state, action) => {
@@ -157,7 +176,15 @@ const groupSlice = createSlice({
 // ====== selectors ======
 export const { setSelectedGroupId } = groupSlice.actions;
 export const selectSelectedGroupId = (state) => state.groups.selectedGroupId;
-export const selectGroups = (state) => state.groups.groups;
+
+export const selectGroups = createSelector(
+    [
+    (state) => state.groups.allIds ?? [],
+    (state) => state.groups.groups ?? {},
+  ],
+  (allIds, groups) => allIds.map(id => groups[id])
+);
+
 export const selectGroupsLoading = (state) => state.groups.loading;
 export const selectGroupsError = (state) => state.groups.error;
 

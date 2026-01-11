@@ -6,4 +6,6 @@ export const leadsApi = {
     addSchoolLead: async(data) => api.post('/leads/create', data),
     deleteLead: async (id) => api.delete(`/leads/delete/${id}`),
     updateLead: async (id, data) => api.patch(`/leads/update/${id}`, data),
+
+    getGroupedLeads: async(data) => api.post('leads/groupedleads', data)
 }

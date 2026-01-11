@@ -10,22 +10,36 @@ export const ProtectedRoute = ({ children, roles = [] }) => {
      console.warn('user undefined. do not loaded to redux');
     }
 
-
-    if (!isAuth) {
+    if (!isAuth) { // no auth - quit
+        console.error("Not authorized")
+        return <Navigate to="/registration" replace />;
+    }
+    
+    if (!user) { // no user - quit
+        console.error("user not found")
         return <Navigate to="/registration" replace />;
     }
 
-    if (!user) {
+    if (!user.roles) { // user with no roles - quit
+        console.error("user roles not found")
         return <Navigate to="/registration" replace />;
     }
 
-    if (user.role === 'admin') {
+    if (user.roles.includes('owner')) {
         return children;
     }
 
-    if (!roles.includes(user.role)) {
+    // if user have required role in roles - pass him
+    const hasAccess = user.roles?.some(role => roles.includes(role));
+
+    if (!hasAccess) {
+        console.error("Отказано в доступе");
+        alert("Отказано в доступе")
         return <Navigate to="/profile" replace />;
     }
+
+
+    
 
     return children;
 };

@@ -6,11 +6,11 @@ export const fetchUsers = createAsyncThunk(
     "users/fetchUsers",
     async (data, { rejectWithValue }) => {
         try {
-            const response = await APIs.user.getSchoolUsersProfiles(data)
+            const response = await APIs.user.getSchoolUsers(data)
             if (!response) {
                 throw new Error("Ошибка закрузки пользователей");
             }
-            return await response.data;
+            return response.data;
         } catch (error) {
             return rejectWithValue(error.message)
         }
@@ -25,7 +25,7 @@ export const registerAdminSchool = createAsyncThunk(
             if (!response) {
                 throw new Error("Ошибка закрузки пользователей");
             }
-            return await response.json();
+            return response.json();
 
         } catch (error) {
             return rejectWithValue(error.message)
@@ -74,13 +74,15 @@ const userSlice = createSlice({
                 state.loading = true;
                 state.error = null;
             })
-            .addCase(fetchUsers.fulfilled, (state, acion) => {
-                state.schoolUsers = acion.payload;
+            .addCase(fetchUsers.fulfilled, (state, action) => {
+                state.schoolUsers = action.payload;
                 state.loading = false;
             })
             .addCase(fetchUsers.rejected, (state, action) => {
                 state.error = action.payload;
                 state.loading = false;
+                console.error('thunk "fetchUsers"  rejected: ', action.payload)
+
             })
 
             //  =================================== REGISTER ADMIN + SCHOOL

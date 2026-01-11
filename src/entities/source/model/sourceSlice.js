@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSelector, createSlice } from "@reduxjs/toolkit";
 import { APIs } from "../../../shared";
 
 // Получение всех источников по school_id
@@ -58,7 +58,8 @@ export const deleteSource = createAsyncThunk(
 );
 
 const initialState = {
-    sources: [],
+    sourcesByID: {},
+    sourcesAllIds: [],
     loading: false,
     error: null
 };
@@ -74,8 +75,21 @@ const sourceSlice = createSlice({
                 state.loading = true;
                 state.error = null;
             })
-            .addCase(fetchSources.fulfilled, (state, action) => {
-                state.sources = action.payload;
+            .addCase(fetchSources.fulfilled, (state, action) => { 
+                const payload = action.payload.data;
+
+                const byId = {};
+                const allIds = [];
+
+                payload?.map(source => {
+                    byId[source.id] = source
+                    allIds.push(source.id)
+                });
+
+                state.sourcesByID = byId;
+                state.sourcesAllIds = allIds;
+
+
                 state.loading = false;
             })
             .addCase(fetchSources.rejected, (state, action) => {
@@ -130,7 +144,14 @@ const sourceSlice = createSlice({
     }
 });
 
-export const selectSources = (state) => state.sources.sources;
+export const selectSources = createSelector(
+    [
+        (state) => state.sources.sourcesAllIds,
+        (state) => state.sources.sourcesByID,
+    ],
+    (ids, entities) => ids.map(id => entities[id])
+);
+export const selectSourcesById = (state) => state.sources.sourcesByID;
 export const selectSourcesLoading = (state) => state.sources.loading;
 export const selectSourcesError = (state) => state.sources.error;
 

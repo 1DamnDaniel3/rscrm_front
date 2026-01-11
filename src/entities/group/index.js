@@ -2,5 +2,5 @@ export {
     default as groupReducer,
     selectGroups, selectGroupsError, selectGroupsLoading, selectSelectedGroupId,
     fetchGroups, deleteGroup, updateGroup, addGroup, setSelectedGroupId,
-} from './model/gropSlice'
+} from './model/groupSlice'
 export { groupApi } from './api/groupApi'

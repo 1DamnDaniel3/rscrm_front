@@ -2,12 +2,13 @@ import {
     userApi, leadsApi, schoolsApi,
     statusApi, groupApi, sourceApi,
     studentApi, clientApi, scheduleApi,
-    lessonsApi, stylesApi
+    lessonsApi, stylesApi, profileApi
 } from '../../entities';
 
 
 export const APIs = {
     user: userApi,
+    profile: profileApi,
     //lead
     lead: leadsApi,
     source: sourceApi,
@@ -23,6 +24,7 @@ export const APIs = {
     style: stylesApi,
     //school
     schools: schoolsApi,
+
 
 };
 

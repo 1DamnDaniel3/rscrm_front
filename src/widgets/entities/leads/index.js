@@ -1,1 +1,0 @@
-export { LeadsTable } from './leadsTable'

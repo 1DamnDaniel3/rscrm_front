@@ -3,10 +3,9 @@ import {api} from '../../../shared'
 export const userApi = {
     registerAdminSchool: async (data) => api.post('/ownerschool/register', data),
     loginUser: async (data) => api.post('/user_accounts/login', data),
-    logoutUser: async (data) => api.post('/users/logout', data),
+    logoutUser: async (data) => api.post('/user_accounts/logout', data),
 
-    setUserProfile: async (id) => api.get(`/user_profiles/getone/${id}`),
+    setUserAccount: async (id) => api.get(`/user_accounts/getone/${id}`),
     authCheck: async (data) => api.get('/auth/check', data),
-    getSchoolUsers: async (data) => api.post('./users/getAllWhere', data),
-    getSchoolUsersProfiles: async (data) => api.post('./users/getWithRole', data),
+    getSchoolUsers: async (data) => api.post('./user_accounts/getallwhere', data),
 }

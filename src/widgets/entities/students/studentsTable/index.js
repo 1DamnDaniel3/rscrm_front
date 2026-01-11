@@ -1,1 +1,0 @@
-export { StudentTable } from './ui/StudentsTable'

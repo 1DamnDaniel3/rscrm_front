@@ -67,8 +67,25 @@ export const Navigation = () => {
     }
 
 
-    if (!user || !user.role) return null;
-    const links = roleBasedLinks[user.role] || [];
+    if (!user) {
+        console.error("User not found")
+        return null
+    };
+    if (!user.roles) {
+        console.error("wrong api to draw navigate panel")
+        return null
+    }
+    
+    // Only unique links for summed role
+    const mergedLinks = new Map();
 
-    return <NavigationPanel links={links} onClick={handleLogout} text={"Выйти"} />;
+    user.roles.forEach(role => {
+        roleBasedLinks[role]?.forEach(link=>{
+            mergedLinks.set(link.name, link)
+        }) 
+    });
+
+    const summedLinks = Array.from(mergedLinks.values());
+
+    return <NavigationPanel links={summedLinks} onClick={handleLogout} text={"Выйти"} />
 }

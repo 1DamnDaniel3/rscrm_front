@@ -1,2 +1,3 @@
-export const API_URL = process.env.REACT_APP_API_URL
-//  || 'http://localhost:3001/api';
+export const API_URL = process.env.REACT_APP_ENV === "prod" 
+    ? process.env.REACT_APP_API_URL_PROD 
+    : process.env.REACT_APP_API_URL_DEV

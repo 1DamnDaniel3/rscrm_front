@@ -1,7 +1,7 @@
 import { api } from '../../../shared';
 
 export const statusApi = {
-    getAllStatusesWhere: async (data) => api.post('/statuses/getallwhere', data),
+    getAllWhere: async (data) => api.post('/statuses/getallwhere', data),
     addStatus: async (data) => api.post('/statuses/create', data),
     getAllStatuses: async () => api.get('/statuses/getall'),
     getStatusById: async (id) => api.get(`/statuses/getone/${id}`),
