@@ -154,6 +154,7 @@ export const selectStatuses = createSelector(
     ], (ids, entities) => ids.map(id => entities[id])
 );
 export const selectStatusesByid = (state) => state.statuses.statusesById;
+export const selectStatusesIds = (state) => state.statuses.statusesAllIds;
 export const selectLoadStatuses = (state) => state.statuses.loading;
 export const selectErrorStatuses = (state) => state.statuses.error;
 

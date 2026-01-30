@@ -3,7 +3,7 @@
   flex-direction: row;
   position: fixed;
   box-sizing: border-box;
-
+  z-index: 999;
 }
 
 .button {
@@ -54,4 +54,20 @@
   &:hover {
     background-color: var(--color-accent-hover);
   }
+}
+
+@keyframes pulseGlow {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 140, 0, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 12px rgba(255, 140, 0, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 140, 0, 0);
+  }
+}
+
+.attention {
+  animation: pulseGlow 1.5s infinite;
 }

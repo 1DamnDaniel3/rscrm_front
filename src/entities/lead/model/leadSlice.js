@@ -48,7 +48,7 @@ export const addLead = createAsyncThunk(
     'leads/addLead',
     async (data, { rejectWithValue }) => {
         try {
-            const response = await APIs.lead.addSchoolLead(data);
+            const response = await APIs.lead.addLeadWithGroup(data);
             return response.data;
         } catch (error) {
             const serverMessage = error.response?.data?.message || 'server error';
@@ -147,10 +147,13 @@ const leadSlice = createSlice({
                 state.error = null;
             })
             .addCase(updateLead.fulfilled, (state, action) => {
-                const id = action.payload.id;
+                const { id, ...changes } = action.payload;
 
-                if (state.byId[id]){
-                    state.byId = {...state.byId[id], ...action.payload}
+                if (state.byId[id]) {
+                    state.byId[id] = {
+                    ...state.byId[id],
+                    ...changes
+                    };
                 }
                 state.loading = false;
             })
@@ -170,6 +173,7 @@ const leadSlice = createSlice({
                 if (!state.allIds.includes(newLead.id)){
                     state.allIds.push(newLead.id)
                 }
+                state.allIds.sort((a, b) => b - a)  
 
                 state.loading = false;
             })

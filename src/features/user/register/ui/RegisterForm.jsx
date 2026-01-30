@@ -1,8 +1,9 @@
-import s from './RegisterForm.module.css'
 import { handleLoginSubmit } from '../model/registerFormHandler'
 import { APIs, Input } from '../../../../shared'
 import { useReducer } from 'react'
 import { initialState, registerReducer } from '../model/regisretReducer'
+import s from './RegisterForm.module.css'
+
 
 export const RegisterForm = ({ setIsLoggin }) => {
     const [state, dispatchLocal] = useReducer(registerReducer, initialState)
@@ -36,16 +37,18 @@ export const RegisterForm = ({ setIsLoggin }) => {
 
                 <div className={s.column}>
                     <p>О вас:</p>
-                    <Input type="email" label="Email" value={state.account.email || ''}
-                        onChange={(e) => dispatchLocal({ type: 'SET_USER_EMAIL', payload: e.target.value })} />
+                    
+                    <Input type="email" label={"Email"} value={state.account.email || '' }
+                        onChange={(e) => dispatchLocal({ type: 'SET_USER_EMAIL', payload: e.target.value})} required />
                     <Input type="password" label="Password" value={state.account.password || ''}
-                        onChange={(e) => dispatchLocal({ type: 'SET_PASSWORD', payload: e.target.value })} />
+                        onChange={(e) => dispatchLocal({ type: 'SET_PASSWORD', payload: e.target.value })} required />
                     <Input type="text" label="Полное имя" value={state.profile.full_name || ''}
-                        onChange={(e) => dispatchLocal({ type: 'SET_USER_NAME', payload: e.target.value })} />
-                    <Input type="text" label="Телефон" value={state.profile.phone || ''}
-                        onChange={(e) => dispatchLocal({ type: 'SET_USER_PHONE', payload: e.target.value })} />
+                        onChange={(e) => dispatchLocal({ type: 'SET_USER_NAME', payload: e.target.value })} required />
+                    
+                    <Input type="tel" label="Телефон" autoComplete = "tel" value={state.profile.phone || ''}
+                        onChange={(e) => dispatchLocal({ type: 'SET_USER_PHONE', payload: e.target.value })}  required/>
                     <Input type="date" label="Дата рождения" value={state.profile.birthdate || ''}
-                        onChange={(e) => dispatchLocal({ type: 'SET_BIRTHDATE', payload: e.target.value })} />
+                        onChange={(e) => dispatchLocal({ type: 'SET_BIRTHDATE', payload: e.target.value })} required/>
                 </div>
 
                 <div className={s.column}>
@@ -53,11 +56,15 @@ export const RegisterForm = ({ setIsLoggin }) => {
                     <Input type="email" label="Email" value={state.school.email || ''}
                         onChange={(e) => dispatchLocal({ type: 'SET_SCHOOL_EMAIL', payload: e.target.value })} />
                     <Input type="text" label="Город" value={state.school.city || ''}
-                        onChange={(e) => dispatchLocal({ type: 'SET_CITY', payload: e.target.value })} />
+                        onChange={(e) => dispatchLocal({ type: 'SET_CITY', payload: e.target.value })} required/>
                     <Input type="text" label="Наименование организации" value={state.school.name || ''}
-                        onChange={(e) => dispatchLocal({ type: 'SET_SCHOOL_NAME', payload: e.target.value })} />
-                    <Input type="text" label="Телефон" value={state.school.phone || ''}
+                        onChange={(e) => dispatchLocal({ type: 'SET_SCHOOL_NAME', payload: e.target.value })} required/>
+                    <Input type="tel" label="Телефон" value={state.school.phone || ''}
                         onChange={(e) => dispatchLocal({ type: 'SET_SCHOOL_PHONE', payload: e.target.value })} />
+                    <div className={s.requiredInfoWrapper}>
+                        <i className={s.requiredSymbol}>*</i>
+                        <span> — обязательные поля</span>
+                    </div>
 
                 </div>
             </div>

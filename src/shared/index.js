@@ -4,9 +4,9 @@ export {
     IconButton, NavigationPanel,
     Button, EditableText,
     Footer, HeroBlock, SelectLong, SelectShort,
-    Tag, Calendar, Modal, AttendanceList
+    Tag, Calendar, Modal, AttendanceList, Instruction
 } from './ui'
 export {
     formatDate, formatDateTime, normalizeToInputDate,
-    getAgeFromBirthdate,
+    getAgeFromBirthdate, 
 } from './lib'

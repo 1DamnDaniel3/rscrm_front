@@ -152,6 +152,7 @@ export const selectSources = createSelector(
     (ids, entities) => ids.map(id => entities[id])
 );
 export const selectSourcesById = (state) => state.sources.sourcesByID;
+export const selectSourcesIds = (state) => state.sources.sourcesAllIds;
 export const selectSourcesLoading = (state) => state.sources.loading;
 export const selectSourcesError = (state) => state.sources.error;
 

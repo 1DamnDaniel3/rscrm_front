@@ -8,3 +8,28 @@
     background-color: var(--color-bg);
     padding: 0 55px 55px 155px;
 }
+
+.addButton{
+    position:absolute;
+    z-index: 1;
+
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    
+
+    margin-left: 3px;
+    margin-top: 94px;
+
+    clip-path: inset(68% 20% 0 0 round 5% 20% 0 10%);
+    border-radius: 0px;
+    width: 90px;
+
+    &::before {
+        content: "+";
+        font-size: 24px;
+        color: white; 
+        transform: translateY(20%);
+        margin-right: 20px;
+    }
+}

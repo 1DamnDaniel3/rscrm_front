@@ -5,7 +5,7 @@ import {
     selectSelectedGroupId, selectUser, setSelectedGroupId,
     updateGroup
 } from "../../../entities";
-import { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import cn from 'classnames';
 import plus from '../../../shared/assets/icons/plusIcon.svg';
 import s from './GroupFooter.module.css';
@@ -16,6 +16,9 @@ export const GroupFooter = ({ entity_type }) => {
     const groups = useSelector(selectGroups)
     const user = useSelector(selectUser)
     const selectedGroup = useSelector(selectSelectedGroupId)
+
+    const editableRefs = useRef({});  // ref to activate focus in editable text
+
 
     const defaultAddData = {
         name: '',
@@ -28,38 +31,55 @@ export const GroupFooter = ({ entity_type }) => {
 
     
     return (
-
-        
         <div className={s.groupFooter}>
-
             <Footer>
-                {groups.map(group => (
-                    <Button
-                        key={group.id}
-                        className={cn(s.button, { [s.selectedButton]: group.id === selectedGroup })}
-                        onClick={() => handleSelectGroup(group.id)}
-                    >
-                        <EditableText
-                            value={group.name}
-                            onSave={(newName) => {
-                                dispatch(updateGroup({ group_id: group.id, data: { name: newName } }));
-                            }}
-                            className={s.buttonText}
-                        />
-                        <SelectShort 
-                        options={[{label: "Удалить", value: group.id}]}
-                        value={null}
-                        onChange={(val) => {dispatch(deleteGroup(val))}}
-                        />
+                {groups.map(group => {
+                    // Создаём ref для группы, если ещё нет
+                    if (!editableRefs.current[group.id]) {
+                        editableRefs.current[group.id] = React.createRef();
+                    }
 
-                    </Button>
-                ))}
+                    return (
+                        <Button
+                            key={group.id}
+                            className={cn(s.button, { [s.selectedButton]: group.id === selectedGroup })}
+                            onClick={() => handleSelectGroup(group.id)}
+                        >
+                            <EditableText
+                                ref={editableRefs.current[group.id]} // прокидываем ref
+                                value={group.name}
+                                onSave={(newName) => {
+                                    dispatch(updateGroup({ group_id: group.id, data: { name: newName } }));
+                                }}
+                                className={s.buttonText}
+                            />
+                            <SelectShort
+                                options={[
+                                    { label: "Удалить", value: "delete" },
+                                    { label: "Переименовать", value: "rename" }
+                                ]}
+                                value={null}
+                                onChange={(val) => {
+                                    switch (val) {
+                                        case "delete":
+                                            dispatch(deleteGroup(group.id));
+                                            break;
+                                        case "rename":
+                                            editableRefs.current[group.id]?.current?.focusEditable();
+                                            break;
+                                    }
+                                }}
+                            />
+                        </Button>
+                    );
+                })}
 
-                <IconButton icon={plus} onClick={() => handleAddGroup(defaultAddData)} className={s.plusBtn} />
-
+                <IconButton
+                    icon={plus}
+                    onClick={() => handleAddGroup(defaultAddData)}
+                    className={`${s.plusBtn} ${groups.length === 0 ? s.attention : ''}`}
+                />
             </Footer>
-
-
         </div>
-    )
+    );
 }

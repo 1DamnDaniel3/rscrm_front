@@ -1,0 +1,18 @@
+.instructionWrapper{
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    height: 20%;
+    width: 40%;
+}
+
+.instruction{
+    font-family: 'raydis-header';
+    font-size: 32px; /* или любой другой размер */
+    font-weight: bold;
+    color: var(--color-border);
+    margin-right: 16px;
+    white-space: nowrap;
+}

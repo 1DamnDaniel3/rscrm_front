@@ -1,10 +1,12 @@
 import s from './Input.module.css'
+import { IMaskInput } from 'react-imask';
 import { useState } from 'react';
 
-export const Input = ({ type, name, autoComplete, className, value, onChange, placeholder, label }) => {
+export const Input = ({ type, name, autoComplete, className, value, onChange, label, required }) => {
     const [showPassword, setShowPassword] = useState(false);
     const [animTrigger, setAnimTrigger] = useState(false);
     const isPassword = type === 'password';
+    const isPhone = type === 'tel';
 
     const toggleShow = () => {
         setShowPassword(prev => !prev);
@@ -14,16 +16,28 @@ export const Input = ({ type, name, autoComplete, className, value, onChange, pl
 
     return (
         <div className={s.input_group}>
-            <input
-                required
-                type={isPassword ? (showPassword ? "text" : "password") : type}
-                name={name}
-                autoComplete={autoComplete}
-                className={`${s.input} ${className}`}
-                value={value}
-                onChange={onChange}
-                placeholder={placeholder}
-            />
+            {required ? <i className={s.requiredSymbol}>*</i> : null}
+            {isPhone ? (
+                <IMaskInput
+                    mask="+{7}(000)000-00-00"
+                    value={value}
+                    onAccept={(val) => onChange({ target: { value: val } })}
+                    placeholder=" "
+                    className={`${s.input} ${className || ''}`}
+                />
+                ) : (
+                <input
+                    id={name}
+                    type={isPassword ? (showPassword ? "text" : "password") : type}
+                    name={name}
+                    autoComplete={autoComplete}
+                    className={`${s.input} ${className}`}
+                    value={value}
+                    onChange={onChange}
+                    required={required}
+                    placeholder=" "
+                />
+                )}
             <label className={s.user_label}>{label}</label>
             {isPassword && (
                 <span

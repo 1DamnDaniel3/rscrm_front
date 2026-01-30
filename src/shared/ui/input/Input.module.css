@@ -15,8 +15,8 @@
 }
 
 .input[type="date"] + .user_label {
-  top: -12px;
-  font-size: 12px;
+  top: 1px;
+  font-size: 15px;
   padding: 0 0 7px 5px;
   left: 12px;
 }
@@ -40,14 +40,15 @@
 
 /* Активное и валидное состояние */
 .input:focus,
-.input:valid {
+.input:not(:placeholder-shown){
   outline: none;
   border: 1.5px solid var(--color-accent);
 }
 
+
 /* Плавающий label */
-.input:focus ~ .user_label,
-.input:valid ~ .user_label {
+.input:focus ~ label,
+input:not(:placeholder-shown) ~ label {
   transform: translateY(-50%) scale(0.8);
   background-color: var(--color-bg);
   padding: 0 0.2em;
@@ -154,4 +155,14 @@
     transform: translate(-50%, -50%) scale(1);
     opacity: 1;
   }
+}
+
+.requiredSymbol{
+    position: absolute;
+    color: var(--color-accent);
+
+    font-size: 23px;
+    margin-top: 5px;
+    margin-left: 230px;
+    z-index: 1000;
 }

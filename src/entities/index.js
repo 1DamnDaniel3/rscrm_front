@@ -11,7 +11,7 @@ export {
 export {
     profileApi,
     profileReducer,
-    selectProfile, selectSchoolProfiles, selectProfilesError, selectProfilesLoading, 
+    selectProfile, selectSchoolProfiles, selectProfilesById, selectProfilesError, selectProfilesLoading, 
     fetchProfiles
 } from './profile'
 
@@ -70,7 +70,7 @@ export { SchoolCard, schoolsApi } from './school'
 // ========================== status ==========================
 export {
     fetchStatuses, addStatus, updateStatus, deleteStatus,
-    statusReducer, selectErrorStatuses, selectLoadStatuses, selectStatuses, selectStatusesByid,
+    statusReducer, selectErrorStatuses, selectLoadStatuses, selectStatuses, selectStatusesByid, selectStatusesIds,
     statusApi
 } from './status'
 
@@ -79,7 +79,7 @@ export {
 export {
     sourceApi,
     sourceReducer,
-    selectSources, selectSourcesLoading, selectSourcesError, selectSourcesById,
+    selectSources, selectSourcesLoading, selectSourcesError, selectSourcesById, selectSourcesIds,
     fetchSources, createSource, updateSource, deleteSource,
 } from './source'
 // ========================== group ==========================

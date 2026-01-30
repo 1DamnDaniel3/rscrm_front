@@ -1,16 +1,19 @@
 import { Navigation, GroupFooter, LeadsTable } from '../../../widgets'
 import {useLoadPageData} from '../model/useLoadPageData'
-import { HeroBlock } from '../../../shared'
+import { Button, HeroBlock } from '../../../shared'
 import s from './Leads.module.css'
-import { useEffect } from 'react'
+import { addLead } from '../../../entities'
+import { useDispatch } from 'react-redux'
 
 
 
 export const Leads = () => {
-    useLoadPageData({entity_type: "lead"});
+    const dispatch = useDispatch();
+    const { newLeadData } = useLoadPageData({entity_type: "lead"});
     
     return (
         <div className={s.pageContainer}>
+            <Button className={s.addButton} onClick={()=> dispatch(addLead(newLeadData))}/>
             <HeroBlock heroTitle={"LEADS"}/>
             <LeadsTable/>
             <Navigation />
