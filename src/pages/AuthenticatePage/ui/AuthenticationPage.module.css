@@ -2,9 +2,11 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
 
     background-color: var(--color-bg);
 
     width: 100dvw;
     height: 100vh;
 }
+

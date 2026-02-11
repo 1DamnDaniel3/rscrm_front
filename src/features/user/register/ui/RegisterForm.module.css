@@ -1,4 +1,5 @@
 .form {
+    font-family: 'involve-regular';
     display: flex;
     align-items: center;
     justify-content: center;
@@ -15,7 +16,9 @@
 }
 
 .button {
-    margin-top: 40px;
+    font-family: 'involve-regular';
+    margin-top: 15px;
+    margin-bottom: 15px;
     padding: 10px;
     font-size: 16px;
     background-color: var(--color-accent);
@@ -73,8 +76,11 @@
     height: 100%;
 
     color: var(--color-subtext);
+    
 
     .requiredSymbol{
+        font-family: 'Times New Roman', Times, serif;
+        
         align-self: center;
         color: var(--color-accent);
 
@@ -82,4 +88,8 @@
         padding: 0px 10px 0px 20px;
         z-index: 1000;
     }
+}
+
+.formField{
+    width: 260px;
 }

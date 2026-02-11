@@ -38,28 +38,28 @@ export const RegisterForm = ({ setIsLoggin }) => {
                 <div className={s.column}>
                     <p>О вас:</p>
                     
-                    <Input type="email" label={"Email"} value={state.account.email || '' }
+                    <Input type="email" className={s.formField} label={"Email"} value={state.account.email || '' }
                         onChange={(e) => dispatchLocal({ type: 'SET_USER_EMAIL', payload: e.target.value})} required />
-                    <Input type="password" label="Password" value={state.account.password || ''}
+                    <Input type="password" className={s.formField} label="Password" value={state.account.password || ''}
                         onChange={(e) => dispatchLocal({ type: 'SET_PASSWORD', payload: e.target.value })} required />
-                    <Input type="text" label="Полное имя" value={state.profile.full_name || ''}
+                    <Input type="text" className={s.formField} label="Полное имя" value={state.profile.full_name || ''}
                         onChange={(e) => dispatchLocal({ type: 'SET_USER_NAME', payload: e.target.value })} required />
                     
-                    <Input type="tel" label="Телефон" autoComplete = "tel" value={state.profile.phone || ''}
+                    <Input type="tel" className={s.formField} label="Телефон" autoComplete = "tel" value={state.profile.phone || ''}
                         onChange={(e) => dispatchLocal({ type: 'SET_USER_PHONE', payload: e.target.value })}  required/>
-                    <Input type="date" label="Дата рождения" value={state.profile.birthdate || ''}
+                    <Input type="date" className={s.formField} label="Дата рождения" value={state.profile.birthdate || ''}
                         onChange={(e) => dispatchLocal({ type: 'SET_BIRTHDATE', payload: e.target.value })} required/>
                 </div>
 
                 <div className={s.column}>
                     <p>О школе:</p>
-                    <Input type="email" label="Email" value={state.school.email || ''}
+                    <Input type="email" className={s.formField} label="Email" value={state.school.email || ''}
                         onChange={(e) => dispatchLocal({ type: 'SET_SCHOOL_EMAIL', payload: e.target.value })} />
-                    <Input type="text" label="Город" value={state.school.city || ''}
+                    <Input type="text" className={s.formField} label="Город" value={state.school.city || ''}
                         onChange={(e) => dispatchLocal({ type: 'SET_CITY', payload: e.target.value })} required/>
-                    <Input type="text" label="Наименование организации" value={state.school.name || ''}
+                    <Input type="text" className={s.formField} label="Наименование организации" value={state.school.name || ''}
                         onChange={(e) => dispatchLocal({ type: 'SET_SCHOOL_NAME', payload: e.target.value })} required/>
-                    <Input type="tel" label="Телефон" value={state.school.phone || ''}
+                    <Input type="tel" className={s.formField} label="Телефон" value={state.school.phone || ''}
                         onChange={(e) => dispatchLocal({ type: 'SET_SCHOOL_PHONE', payload: e.target.value })} />
                     <div className={s.requiredInfoWrapper}>
                         <i className={s.requiredSymbol}>*</i>

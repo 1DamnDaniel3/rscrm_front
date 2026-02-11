@@ -1,6 +1,7 @@
-import s from './Input.module.css'
 import { IMaskInput } from 'react-imask';
 import { useState } from 'react';
+import s from './Input.module.css'
+
 
 export const Input = ({ type, name, autoComplete, className, value, onChange, label, required }) => {
     const [showPassword, setShowPassword] = useState(false);

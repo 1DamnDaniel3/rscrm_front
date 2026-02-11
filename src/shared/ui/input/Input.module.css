@@ -8,7 +8,7 @@
   border: solid 1.5px var(--input-border);
   border-radius: 1rem;
   background: var(--input-bg);
-  padding: 1rem 2.5rem 1rem 1rem; /* добавлен правый padding под иконку */
+  padding: 1rem 2.5rem 1rem 1rem;
   font-size: 1rem;
   color: var(--color-text);
   transition: border 150ms cubic-bezier(0.4, 0, 0.2, 1), background 0.2s ease;
@@ -158,11 +158,12 @@ input:not(:placeholder-shown) ~ label {
 }
 
 .requiredSymbol{
+    font-family: 'Times New Roman', Times, serif;
     position: absolute;
     color: var(--color-accent);
 
-    font-size: 23px;
+    font-size: 20px;
     margin-top: 5px;
-    margin-left: 230px;
+    margin-left: 240px;
     z-index: 1000;
 }

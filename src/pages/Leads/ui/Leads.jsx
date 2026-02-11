@@ -1,9 +1,10 @@
 import { Navigation, GroupFooter, LeadsTable } from '../../../widgets'
 import {useLoadPageData} from '../model/useLoadPageData'
 import { Button, HeroBlock } from '../../../shared'
-import s from './Leads.module.css'
 import { addLead } from '../../../entities'
 import { useDispatch } from 'react-redux'
+import s from './Leads.module.css'
+
 
 
 

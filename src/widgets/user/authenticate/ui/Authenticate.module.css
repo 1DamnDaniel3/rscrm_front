@@ -4,8 +4,11 @@
     justify-content: center;
 
     flex-direction: column;
+        font-family: 'involve-regular';
+
 
     .links{
+        font-family: 'involve-regular';
         display: flex;
         flex-direction: row;
         align-items: center;
@@ -17,7 +20,15 @@
     }
 
     p{
+        font-family: 'involve-regular';
         font-size: 30px;
     }
 
+}
+
+.regInfo{
+
+    font-family: 'involve-regular';
+    margin-top: 10px;
+    color: var(--input-border);
 }

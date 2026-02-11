@@ -1,0 +1,98 @@
+.tableContainer{
+    position: relative;
+    z-index: 2;
+}
+.tablehead{
+    background-color: var(--input-border);
+}
+.infoRow{
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    border-left: solid white 0.5px;
+    border-right: solid white 0.5px;
+}
+.cell{
+    color: var(--color-text) !important;
+    font-family: 'involve-regular' !important;
+
+    display: flex;
+    align-items: center;
+    padding: 12px 12px 12px 12px !important;
+    text-decoration: none;
+    color: inherit;
+    white-space: nowrap;
+    transition: opacity 0.2s ease;
+}
+
+.expandableRow{
+  font: 'inherit' !important;
+  background-color: var(--color-surface);
+  color: var(--color-text) !important; 
+}
+
+.instructionContainer{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1350px;
+    height: 400px;
+}
+
+/* ================= элементы управления =================== */
+
+.NameInput{
+    display: inline-block;
+    font: inherit;
+    color: inherit;
+    background: transparent;
+    border: none;
+    padding: 0;
+    outline: none;
+    text-align: left;
+    max-width: 300px;
+    width: 200px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.LongText{
+    display: inline-block;
+    font: inherit;
+    color: inherit;
+    background: transparent;
+    border: none;
+    padding: 0;
+    outline: none;
+    text-align: left;
+    width: 1200px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.PhoneInput{
+    display: inline-block;
+    font: inherit;
+    color: inherit;
+    background: transparent;
+    border: none;
+    padding: 0;
+    outline: none;
+    text-align: left;
+    max-width: 300px;
+    width: 100%;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+/* Хуитас Суньхуйлюнь */
+
+.MselectRoot {
+  width: 225px;
+}
+
+.StatselectRoot{
+  width: 180px;
+}

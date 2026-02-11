@@ -3,11 +3,10 @@ import { Paper, Table, TableBody, TableCell,
          Collapse,
          Box,
          Select,
-         MenuItem, TextField} from '@mui/material';
+         MenuItem} from '@mui/material';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ru';
 import DatePicker from 'react-date-picker';
-import { debounce } from 'lodash';
 
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
@@ -18,27 +17,28 @@ import {
       selectLeads,
       selectProfilesById,
       selectSchoolUsers,
-       selectSelectedGroupId, selectSources, selectSourcesById,
+       selectSelectedGroupId, selectSourcesById,
        selectSourcesIds,
-       selectStatuses,
        selectStatusesByid,
        selectStatusesIds,
        updateLead} from '../../../entities';
 import { useDispatch, useSelector } from 'react-redux';
-import { formatDateTime, IconButton, Instruction, EditableText, SelectLong } from '../../../shared';
-import icon from '../../../shared/assets/icons/garbage.svg';
+import { formatDateTime, IconButton, Instruction, EditableText } from '../../../shared';
 import { Fragment, useState } from 'react';
-import s from './LeadsTable.module.css'
+
+import icon from '../../../shared/assets/icons/garbage.svg';
 import upArrow from '../../../shared/assets/images/upArrow.svg'
 import downArrow from '../../../shared/assets/images/downArrow.svg'
+
 import 'react-date-picker/dist/DatePicker.css';
 import 'react-calendar/dist/Calendar.css';
+import s from './LeadsTable.module.css'
+
 
 
 
 export const LeadsTable = () => {
     const dispatch = useDispatch();
-    const [trialDate, setTrialDate] = useState(null);  
 
     // data draw
     const profiles = useSelector(selectProfilesById)

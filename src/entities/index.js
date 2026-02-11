@@ -27,7 +27,7 @@ export {
 // ========================== student ==========================
 export {
     studentApi,
-    studentReducer, fetchStudents, addStudent, updateStudent, deleteStudent,
+    studentReducer, fetchStudents, addStudent, updateStudent, deleteStudent, groupedStudents,
     selectStudents, selectLoadStudents, selectErrorStudents,
 } from './students'
 // ========================== client ==========================

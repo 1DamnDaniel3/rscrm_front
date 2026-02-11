@@ -2,7 +2,7 @@ import { api } from '../../../shared/api/base'
 
 export const clientApi = {
     addClient: async (data) => api.post('/clients/create', data),
-    // getAllClients: async () => api.get('/clients'),
+    getAllClients: async () => api.get('/clients/getall'),
     getAllClientsWhere: async (data) => api.post('/clients/getallwhere', data),
     getClientById: async (id) => api.get(`/clients/getone/${id}`),
     updateClient: async (id, data) => api.patch(`/clients/update/${id}`, data),

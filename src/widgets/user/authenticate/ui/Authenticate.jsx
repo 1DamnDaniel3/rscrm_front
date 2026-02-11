@@ -22,6 +22,8 @@ export const Authenticate = () => {
             </div>
             {isLoggining === true && <LoginForm />}
             {isLoggining === false && <RegisterForm setIsLoggin={setIsLoggin}/>}
+            {isLoggining === false && <span className={s.regInfo}>*Регистрация для владельцев школ</span>
+}
 
         </div>
     )

@@ -5,10 +5,9 @@ import { APIs } from "../../../shared";
 
 export const fetchClients = createAsyncThunk(
     'clients/fetchClients',
-    async (school_id, { rejectWithValue }) => {
+    async (_, { rejectWithValue }) => {
         try {
-            // Используем getAllClientsWhere с фильтром по school_id
-            const response = await APIs.client.getAllClientsWhere({ school_id });
+            const response = await APIs.client.getAllClients();
             return response.data;
         } catch (error) {
             const serverMessage = error.response?.data?.message || 'Ошибка сервера';

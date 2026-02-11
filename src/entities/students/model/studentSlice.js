@@ -1,13 +1,13 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSelector, createSlice } from "@reduxjs/toolkit";
 import { APIs } from "../../../shared";
 
 // --- THUNKS ---
 
 export const fetchStudents = createAsyncThunk(
     'students/fetchStudents',
-    async (school_id, { rejectWithValue }) => {
+    async (data, { rejectWithValue }) => {
         try {
-            const response = await APIs.student.getStudentsWhere({ school_id });
+            const response = await APIs.student.getAllWhere(data);
             return response.data;
         } catch (error) {
             const serverMessage = error.response?.data?.message || 'server error';
@@ -20,7 +20,7 @@ export const addStudent = createAsyncThunk(
     'students/addStudent',
     async (data, { rejectWithValue }) => {
         try {
-            const response = await APIs.student.addStudent(data);
+            const response = await APIs.student.addStudentWithGroup(data);
             return response.data;
         } catch (error) {
             const serverMessage = error.response?.data?.message || 'server error';
@@ -55,10 +55,28 @@ export const deleteStudent = createAsyncThunk(
     }
 );
 
-// --- SLICE ---
+// ----================================ Filtered Leads ================================----
+
+// Сгруппированные ученики
+export const groupedStudents = createAsyncThunk(
+    'leads/groupedStudents',
+    async (data, {rejectWithValue}) =>{
+        try{
+            const responce = await APIs.student.getGrouped(data);
+            return responce.data;
+        } catch(error){
+            const serverMessage = error.response?.data?.message || 'server error';
+            return rejectWithValue(serverMessage);
+        }
+        
+    }
+)
+
+// ---------------------------------------------------- SLICE ----------------------------------------------------
 
 const initialState = {
-    students: [],
+    byId: {},
+    allIds: [],
     loading: false,
     error: null,
 };
@@ -69,44 +87,27 @@ const studentSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder
-
             // ======== fetchStudents ========
             .addCase(fetchStudents.pending, (state) => {
                 state.loading = true;
                 state.error = null;
             })
             .addCase(fetchStudents.fulfilled, (state, action) => {
-                const sortedStudents = action.payload.slice().sort((a, b) => {
-                    const idA = typeof a.id === 'string' ? Number(a.id) : a.id;
-                    const idB = typeof b.id === 'string' ? Number(b.id) : b.id;
-                    return idB - idA;
+                
+                const studentsPayload = action.payload.data;
+
+                const byIds = {};
+                const AllIds = [];
+
+                studentsPayload.forEach(student => {
+                    byIds[student.id] = student
+                    AllIds.push(student.id)
                 });
 
-                state.students = sortedStudents.map(student => ({
-                    id: student.id,
-                    name: student.name,
-                    birthdate: student.birthdate,
-                    age: student.birthdate,
-                    skill_level: student.skill_level,
-                    contact: student.contact,
-                    created_at: student.created_at,
-                    groups: (student.Groups || []).map(group => ({ id: group.id })),
-                    subscriptions: (student.Subscriptions || []).map(sub => ({
-                        id: sub.id,
-                        sub_name: sub.name,
-                        issued_at: sub.StudentSubscription?.issued_at,
-                        expires_at: sub.StudentSubscription?.expires_at,
-                        remaining_visits: sub.StudentSubscription?.remaining_visits
-                    })),
-                    clients: (student.Clients || []).map(client => ({
-                        id: client.id,
-                        client_name: client.name,
-                        phone: client.phone,
-                        contact: client.contact,
-                        is_payer: client.StudentClient?.is_payer,
-                        relation: client.StudentClient?.relation
-                    }))
-                }));
+                AllIds.sort((a, b) => a - b);
+
+                state.byId = byIds;
+                state.allIds = AllIds;
 
                 state.loading = false;
             })
@@ -121,36 +122,14 @@ const studentSlice = createSlice({
                 state.error = null;
             })
             .addCase(addStudent.fulfilled, (state, action) => {
-                const student = action.payload;
-                const newId = typeof student.id === 'string' ? Number(student.id) : student.id;
+                const newStudent = action.payload;
+                state.byId[newStudent.id] = newStudent
 
-                state.students.push({
-                    id: newId,
-                    name: student.name,
-                    birthdate: student.birthdate,
-                    age: student.birthdate,
-                    skill_level: student.skill_level,
-                    contact: student.contact,
-                    created_at: student.created_at,
-                    groups: (student.Groups || []).map(group => ({ id: group.id })),
-                    subscriptions: (student.Subscriptions || []).map(sub => ({
-                        id: sub.id,
-                        sub_name: sub.name,
-                        issued_at: sub.StudentSubscription?.issued_at,
-                        expires_at: sub.StudentSubscription?.expires_at,
-                        remaining_visits: sub.StudentSubscription?.remaining_visits
-                    })),
-                    clients: (student.Clients || []).map(client => ({
-                        id: client.id,
-                        client_name: client.name,
-                        phone: client.phone,
-                        contact: client.contact,
-                        is_payer: client.StudentClient?.is_payer,
-                        relation: client.StudentClient?.relation
-                    }))
-                });
+                if (!state.allIds.includes(newStudent.id)){
+                    state.allIds.push(newStudent.id)
+                }
+                state.allIds.sort((a, b) => b - a)  
 
-                state.students.sort((a, b) => b.id - a.id);
                 state.loading = false;
             })
             .addCase(addStudent.rejected, (state, action) => {
@@ -164,41 +143,14 @@ const studentSlice = createSlice({
                 state.error = null;
             })
             .addCase(updateStudent.fulfilled, (state, action) => {
-                const updated = action.payload;
-                const updatedId = typeof updated.id === 'string' ? Number(updated.id) : updated.id;
+                const {id, ...changes} = action.payload;
 
-                const idx = state.students.findIndex(s => s.id === updatedId);
-                const studentData = {
-                    id: updatedId,
-                    name: updated.name,
-                    birthdate: updated.birthdate,
-                    created_at: updated.created_at,
-                    skill_level: updated.skill_level,
-                    contact: updated.contact,
-                    groups: (updated.Groups || []).map(group => ({ id: group.id })),
-                    subscriptions: (updated.Subscriptions || []).map(sub => ({
-                        id: sub.id,
-                        sub_name: sub.name,
-                        issued_at: sub.StudentSubscription?.issued_at,
-                        expires_at: sub.StudentSubscription?.expires_at,
-                        remaining_visits: sub.StudentSubscription?.remaining_visits
-                    })),
-                    clients: (updated.Clients || []).map(client => ({
-                        id: client.id,
-                        client_name: client.name,
-                        phone: client.phone,
-                        contact: client.contact,
-                        is_payer: client.StudentClient?.is_payer,
-                        relation: client.StudentClient?.relation
-                    }))
-                };
-
-                if (idx < 0) {
-                    state.students.push(studentData);
-                } else {
-                    state.students[idx] = studentData;
+                if(state.byId[id]){
+                    state.byId[id] = {
+                        ...state.byId[id],
+                        ...changes
+                    };
                 }
-
                 state.loading = false;
             })
             .addCase(updateStudent.rejected, (state, action) => {
@@ -212,22 +164,60 @@ const studentSlice = createSlice({
                 state.error = null;
             })
             .addCase(deleteStudent.fulfilled, (state, action) => {
-                const deletedId = typeof action.payload === 'object' && 'id' in action.payload
-                    ? Number(action.payload.id)
-                    : Number(action.payload);
+                const deletedID = action.payload.id;
+                if(!deletedID) return;
 
-                state.students = state.students.filter(student => student.id !== deletedId);
+                delete state.byId[deletedID];
+                if (state.allIds){
+                    state.allIds = state.allIds.filter(id => id !== deletedID);
+                }
+
                 state.loading = false;
             })
             .addCase(deleteStudent.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
-            });
+            })
+            // ---================== Filtered ==================---
+            
+             .addCase(groupedStudents.pending, (state) => {
+                 state.loading = true;
+                 state.error = null;
+             })
+             .addCase(groupedStudents.fulfilled, (state, action) => {
+                 
+                 const studArray = action.payload?.data || [];
+
+                 const ById = {};
+                  const AllIds = [];
+
+                 studArray.forEach(student => {
+                     ById[student.id] = student
+                      AllIds.push(student.id)
+                  });
+
+                   AllIds.sort((a, b) => b - a);
+
+                   state.byId = ById;
+                   state.allIds = AllIds;
+
+                   state.loading = false;
+               })
+               .addCase(groupedStudents.rejected, (state, action) => {
+                   state.loading = false;
+                   state.error = action.payload;
+               });
     }
 });
 
 // --- SELECTORS ---
-export const selectStudents = (state) => state.students.students;
+export const selectStudents = createSelector(
+    [
+        (state) => state.students.allIds,
+        (state) => state.students.byId,
+    ],
+    (ids, entities) => ids.map(id => entities[id])
+);
 export const selectLoadStudents = (state) => state.students.loading;
 export const selectErrorStudents = (state) => state.students.error;
 
