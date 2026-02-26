@@ -55,11 +55,11 @@ export const deleteStudent = createAsyncThunk(
     }
 );
 
-// ----================================ Filtered Leads ================================----
+// ----================================ Filtered Students ================================----
 
 // Сгруппированные ученики
 export const groupedStudents = createAsyncThunk(
-    'leads/groupedStudents',
+    'students/groupedStudents',
     async (data, {rejectWithValue}) =>{
         try{
             const responce = await APIs.student.getGrouped(data);
@@ -71,6 +71,8 @@ export const groupedStudents = createAsyncThunk(
         
     }
 )
+
+
 
 // ---------------------------------------------------- SLICE ----------------------------------------------------
 
@@ -189,11 +191,11 @@ const studentSlice = createSlice({
                  const studArray = action.payload?.data || [];
 
                  const ById = {};
-                  const AllIds = [];
+                const AllIds = [];
 
                  studArray.forEach(student => {
-                     ById[student.id] = student
-                      AllIds.push(student.id)
+                    ById[student.id] = student
+                    AllIds.push(student.id)
                   });
 
                    AllIds.sort((a, b) => b - a);
@@ -207,6 +209,7 @@ const studentSlice = createSlice({
                    state.loading = false;
                    state.error = action.payload;
                });
+               
     }
 });
 

@@ -1,5 +1,6 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSelector, createSlice } from "@reduxjs/toolkit";
 import { APIs } from "../../../shared";
+import { studentClients } from "../../students";
 
 // --- THUNKS ---
 
@@ -20,8 +21,8 @@ export const deleteClient = createAsyncThunk(
     'clients/deleteClient',
     async (id, { rejectWithValue }) => {
         try {
-            await APIs.client.deleteClient(id);
-            return { id }; // Возвращаем ID удаленного клиента
+            const response = await APIs.client.deleteClient(id);
+            return response.data
         } catch (error) {
             const serverMessage = error.response?.data?.message || 'Ошибка сервера';
             return rejectWithValue(serverMessage);
@@ -55,26 +56,48 @@ export const addClient = createAsyncThunk(
     }
 );
 
-// --- SLICE ---
+
+
+// ----================================ Filtered Leads ================================----
+
+// Сгруппированные ученики
+export const groupedClients = createAsyncThunk(
+    'leads/groupedClients',
+    async (data, {rejectWithValue}) =>{
+        try{
+            const responce = await APIs.client.getGrouped(data);
+            return responce.data;
+        } catch(error){
+            const serverMessage = error.response?.data?.message || 'server error';
+            return rejectWithValue(serverMessage);
+        }
+        
+    }
+)
+// for async searching 
+export const SearchClients = createAsyncThunk(
+    'clients/SearchClients',
+    async (name, { rejectWithValue }) => {
+        try {
+            const response = await APIs.client.search(name);
+            return response.data;
+        } catch (error) {
+            const serverMessage = error.response?.data?.message || 'Ошибка сервера';
+            return rejectWithValue(serverMessage);
+        }
+    }
+);
+
+// --------------------------- SLICE ---------------------------
 
 const initialState = {
-    clients: [],
+    byId: {},
+    allIds: [],
+    studentClientsIds: {},
+    searchIds: [],
     loading: false,
     error: null,
 };
-
-// Функция для преобразования данных клиента
-const transformClient = (client) => ({
-    id: client.id,
-    name: client.name,
-    phone: client.phone,
-    birthdate: client.birthdate,
-    age: client.birthdate,
-    contact: client.contact,
-    created_at: client.created_at,
-    school_id: client.school_id,
-    groups: client.Groups || client.groups || []
-});
 
 const clientSlice = createSlice({
     name: "clients",
@@ -88,13 +111,23 @@ const clientSlice = createSlice({
                 state.error = null;
             })
             .addCase(fetchClients.fulfilled, (state, action) => {
+                const clientsData = action.payload?.data || [];
+
+                const ById = {};
+                const AllIds = [];
+
+                clientsData.forEach(client => {
+                    ById[client.id] = client
+                    AllIds.push(client.id)
+                });
+
+                AllIds.sort((a, b) => a - b)
+
+                state.byId = ById;
+                state.allIds = AllIds;
+
                 state.loading = false;
                 state.error = null;
-                
-                // Преобразуем и сортируем клиентов (новые сверху)
-                state.clients = action.payload
-                    .map(transformClient)
-                    .sort((a, b) => b.id - a.id);
             })
             .addCase(fetchClients.rejected, (state, action) => {
                 state.loading = false;
@@ -107,11 +140,16 @@ const clientSlice = createSlice({
                 state.error = null;
             })
             .addCase(deleteClient.fulfilled, (state, action) => {
+                const deletedID = action.payload.id;
+                if(!deletedID) return;
+
+                delete state.byId[deletedID];
+                if (state.allIds){
+                    state.allIds = state.allIds.filter(id => id !== deletedID);
+                }
+
                 state.loading = false;
                 state.error = null;
-                state.clients = state.clients.filter(
-                    client => client.id !== action.payload.id
-                );
             })
             .addCase(deleteClient.rejected, (state, action) => {
                 state.loading = false;
@@ -124,25 +162,17 @@ const clientSlice = createSlice({
                 state.error = null;
             })
             .addCase(updateClient.fulfilled, (state, action) => {
+                
+                const {id, ...changes} = action.payload;
+
+                if(state.byId[id]){
+                    state.byId[id] = {
+                        ...state.byId[id],
+                        ...changes
+                    };
+                }                
                 state.loading = false;
                 state.error = null;
-                
-                const updated = action.payload;
-                const existingClient = state.clients.find(c => c.id === updated.id);
-                
-                if (!existingClient) {
-                    state.clients.push(transformClient(updated));
-                } else {
-                    // Обновляем существующего клиента, сохраняя группы
-                    const updatedClient = transformClient({
-                        ...updated,
-                        Groups: updated.Groups || existingClient.groups
-                    });
-                    
-                    state.clients = state.clients.map(client => 
-                        client.id === updated.id ? updatedClient : client
-                    );
-                }
             })
             .addCase(updateClient.rejected, (state, action) => {
                 state.loading = false;
@@ -155,23 +185,103 @@ const clientSlice = createSlice({
                 state.error = null;
             })
             .addCase(addClient.fulfilled, (state, action) => {
+
+                const newClient = action.payload;
+                state.byId[newClient.id] = newClient
+
+                if (!state.allIds.includes(newClient.id)){
+                    state.allIds.push(newClient.id)
+                }
+                state.allIds.sort((a, b) => b - a)  
+
                 state.loading = false;
                 state.error = null;
-                
-                // Добавляем нового клиента в начало списка
-                const newClient = transformClient(action.payload);
-                state.clients = [newClient, ...state.clients];
             })
             .addCase(addClient.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
+            })
+            // ---================== Filtered ==================---
+                        
+            .addCase(groupedClients.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(groupedClients.fulfilled, (state, action) => {
+                
+                const cliArray = action.payload?.data || [];
+                const ById = {};
+                 const AllIds = [];
+                cliArray.forEach(client => {
+                    ById[client.id] = client
+                     AllIds.push(client.id)
+                });
+                  AllIds.sort((a, b) => b - a);
+                  state.byId = ById;
+                  state.allIds = AllIds;
+                state.loading = false;
+            })
+            .addCase(groupedClients.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            })
+            
+            // Search Clients
+
+            .addCase(SearchClients.pending, (state) => {
+                 state.loading = true;
+                 state.error = null;
+            })
+            .addCase(SearchClients.fulfilled, (state, action) => {
+                
+                const payload = action.payload?.data || [];
+
+                payload.forEach(client => {
+                    state.byId[client.id] = client
+                });
+                state.searchIds = payload.map(c => c.id)
+
+
+
+                state.loading = false;
+            })
+            .addCase(SearchClients.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
             });
+
     }
 });
 
 // Селекторы
-export const selectClients = (state) => state.clients.clients;
+export const selectClients = createSelector(
+    [
+        (state) => state.clients.allIds,
+        (state) => state.clients.byId,
+    ],
+    (ids, entities) => ids.map(id => entities[id])
+);
+export const selectClientsById = (state) => state.clients.byId;
 export const selectClientsLoading = (state) => state.clients.loading;
 export const selectClientsError = (state) => state.clients.error;
+
+export const selectClientsByStudent = createSelector(
+    [
+        (state) => state.clients.studentClientsIds,
+        (state) => state.clients.byId,
+        (_, studentId) => studentId
+    ],
+    (studentClientsIds, byId, studentId) => {
+        const ids = studentClientsIds[studentId] || [];
+        return ids.map(id => byId[id]);
+    }
+);
+// Search
+
+export const selectSearchClients = createSelector(
+  (state) => state.clients.byId,
+  (state) => state.clients.searchIds,
+  (byId, searchIds) => searchIds.map(id => byId[id])
+);
 
 export default clientSlice.reducer;

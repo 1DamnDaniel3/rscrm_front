@@ -2,7 +2,7 @@ import {
     userApi, leadsApi, schoolsApi,
     statusApi, groupApi, sourceApi,
     studentApi, clientApi, scheduleApi,
-    lessonsApi, stylesApi, profileApi
+    lessonsApi, stylesApi, profileApi, studentClientsApi
 } from '../../entities';
 
 
@@ -25,6 +25,9 @@ export const APIs = {
     //school
     schools: schoolsApi,
 
+    // relations
+
+    student_clients: studentClientsApi,
 
 };
 

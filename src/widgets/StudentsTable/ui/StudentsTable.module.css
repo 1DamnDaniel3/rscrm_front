@@ -38,10 +38,76 @@
     height: 400px;
 }
 
+/* ================= Доп Info ================= */
+
+.ClientInfoWrapper {
+  font-family: "Involve regular";
+
+  display: grid;
+  grid-template-columns: 
+    80px  /* Клиент N */
+    140px  /* Плательщик */
+    minmax(150px, 0.6fr)  /* Имя (с минимальной шириной 150px) */
+    180px  /* Отношение */
+    minmax(160px, 0.6fr)  /* Телефон */
+    minmax(140px, 0.7fr)  /* Контакт */
+    40px;  /* Кнопка удаления */
+
+  align-items: center;
+  gap: 12px;
+  padding: 8px 0;
+
+  margin-bottom: 12px;
+  padding-left: 20px;
+  padding-right: 20px;
+
+  background: var(--color-muted);
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+
+  transition: background 0.2s ease;
+}
+
+.ClientInfoWrapper span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ClientInfoWrapper:hover {
+  background: var(--input-border);
+}
+
+.clientSpan {
+  font-size: 14px;
+  color: var(--color-text);
+  line-height: 1.4;
+}
+
+.clientSpan:first-child {
+  font-weight: 600;
+  color: (--color-text);
+}
+
+.addRelationBtn{
+  font-family: "Involve regular";
+
+  align-self: center;
+  left: 565px;
+  color: var(--color-accent);
+
+  &:hover{
+    color: var(--color-accent-hover);
+  }
+}
+
+
+
 /* ================= элементы управления =================== */
 
 .NameInput{
     display: inline-block;
+    font-family: "Involve regular";
     font: inherit;
     color: inherit;
     background: transparent;
@@ -95,4 +161,29 @@
 
 .StatselectRoot{
   width: 180px;
+}
+
+/* ======================== INSTRUCTION */
+
+.instruction{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 95%;
+  height: 100%;
+}
+
+.UpArrow{
+  position: absolute;
+  margin-right: 900px;
+  margin-bottom: 250px;
+  width: 500px;
+}
+
+.DownArrow{
+  position: absolute;
+  margin-right: 910px;
+  margin-top: 300px;
+  width: 500px;
+
 }

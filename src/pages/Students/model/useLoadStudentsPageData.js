@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux"
-import { fetchGroups, groupedStudents, selectSelectedGroupId, selectUser } from "../../../entities";
+import { fetchClients, fetchGroups, groupedStudents, selectSelectedGroupId, selectUser, studentClients } from "../../../entities";
 import { useEffect } from "react";
 
 export const useLoadStudentsPageData = ({entity_type}) => {
@@ -29,7 +29,6 @@ export const useLoadStudentsPageData = ({entity_type}) => {
             if(!group_id) return;
 
             dispatch(groupedStudents({group_id: group_id}))
-            
     
         }, [dispatch, user.school_id, entity_type, group_id]);
 

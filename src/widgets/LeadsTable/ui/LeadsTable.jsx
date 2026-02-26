@@ -1,12 +1,11 @@
 import { Paper, Table, TableBody, TableCell,
          TableContainer, TableHead, TableRow, IconButton as IcBtn, 
          Collapse,
-         Box,
-         Select,
-         MenuItem} from '@mui/material';
+         Box} from '@mui/material';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ru';
 import DatePicker from 'react-date-picker';
+import Select from 'react-select';
 
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
@@ -32,6 +31,7 @@ import downArrow from '../../../shared/assets/images/downArrow.svg'
 
 import 'react-date-picker/dist/DatePicker.css';
 import 'react-calendar/dist/Calendar.css';
+import { tableSelectStyles } from './selectorStyles';
 import s from './LeadsTable.module.css'
 
 
@@ -58,6 +58,8 @@ export const LeadsTable = () => {
     // expandable Rows
 
     const [openRowId, setOpenRowId] = useState(null);
+
+    
 
     const toggleRow = (id) => {
         setOpenRowId(prev => (prev === id ? null : id));
@@ -109,53 +111,61 @@ export const LeadsTable = () => {
                                 </TableCell>
 
                                 <TableCell className={s.cell}>
+                                    
                                     <Select
-                                        size="small"
-                                        value={sourcesIds.includes(lead.source_id)  ? lead.source_id : ''}
-                                        displayEmpty
-                                        onChange={(e) =>
-                                        dispatch(updateLead({
-                                            id: lead.id,
-                                            data: { source_id: e.target.value }
-                                        }))}
-                                        className={s.MselectRoot}
-                                    >
-                                        <MenuItem value="" disabled>
-                                        —
-                                        </MenuItem>
-
-                                        {sourcesIds.map(srcID => (
-                                        <MenuItem key={srcID} value={srcID}>
-                                            {sources[srcID].name}
-                                        </MenuItem>
-                                        ))}
-
-                                    </Select>
+                                        value={
+                                            sourcesIds.includes(lead.source_id)
+                                                ? {
+                                                    value: lead.source_id,
+                                                    label: sources[lead.source_id].name
+                                                }
+                                                : null
+                                        }
+                                        onChange={(selected) =>
+                                            dispatch(updateLead({
+                                                id: lead.id,
+                                                data: { source_id: selected?.value || null }
+                                            }))
+                                        }
+                                        options={[
+                                            { value: '', label: '—', isDisabled: true },
+                                            ...sourcesIds.map(srcID => ({
+                                                value: srcID,
+                                                label: sources[srcID].name
+                                            }))
+                                        ]}
+                                        styles={tableSelectStyles}
+                                        menuPosition="fixed"
+                                        isSearchable={false}
+                                    />
                                 </TableCell>
                                 <TableCell className={s.cell}>
-                                    <Select
-                                        size="small"
-                                        value={statusesIds.includes(lead.status_id) ? lead.status_id : ''}
-                                        displayEmpty
-                                        onChange={(e) =>
-                                        dispatch(updateLead({
-                                            id: lead.id,
-                                            data: { status_id: e.target.value }
-                                        }))}
-                                        className={s.StatselectRoot}
-                                        
-                                    >
-                                        <MenuItem value="" disabled>
-                                        —
-                                        </MenuItem>
-
-                                        {statusesIds.map(statusID => (
-                                        <MenuItem key={statusID} value={statusID}>
-                                            {statuses[statusID].name}
-                                        </MenuItem>
-                                        ))}
-
-                                    </Select>
+                                   <Select
+                                        value={
+                                            statusesIds.includes(lead.status_id)
+                                                ? {
+                                                    value: lead.status_id,
+                                                    label: statuses[lead.status_id].name
+                                                }
+                                                : null
+                                        }
+                                        onChange={(selected) =>
+                                            dispatch(updateLead({
+                                                id: lead.id,
+                                                data: { status_id: selected?.value || null }
+                                            }))
+                                        }
+                                        options={[
+                                            { value: '', label: '—', isDisabled: true },
+                                            ...statusesIds.map(statusID => ({
+                                                value: statusID,
+                                                label: statuses[statusID].name
+                                            }))
+                                        ]}
+                                        styles={tableSelectStyles}
+                                        menuPosition="fixed"
+                                        isSearchable={false}
+                                    />
                                 </TableCell>
                                 <TableCell className={s.cell}>
                                         <DatePicker onChange={(val) =>console.log(val)}

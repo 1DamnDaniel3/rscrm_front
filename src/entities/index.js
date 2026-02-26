@@ -34,9 +34,20 @@ export {
 
 export {
     clientApi,
-    clientReducer, addClient, updateClient, deleteClient, fetchClients,
-    selectClients, selectClientsError, selectClientsLoading,
+    clientReducer, selectClientsById,
+    addClient, updateClient, deleteClient, fetchClients, groupedClients,
+    selectClients, selectClientsError, selectClientsLoading, selectClientsByStudent, selectSearchClients,
 } from './client'
+
+// ========================== student-client ==========================
+
+export {studClientReducer,
+     studentClients, addRelation, ChangeRelation, deleteRelation,
+     selectStudentClientsByStudent, selectAllStudentClients,
+     selectLoadingState, selectErrorState,
+    } from './student_clients'
+export {studentClientsApi} from './student_clients'
+
 // ========================== schedule ==========================
 export {
     scheduleApi, scheduleReducer, addSchedule, fetchSchedules, updateSchedule,
@@ -88,4 +99,3 @@ export {
     selectGroups, selectGroupsError, selectGroupsLoading, selectSelectedGroupId,
     fetchGroups, deleteGroup, updateGroup, groupApi, addGroup, setSelectedGroupId
 } from './group'
-

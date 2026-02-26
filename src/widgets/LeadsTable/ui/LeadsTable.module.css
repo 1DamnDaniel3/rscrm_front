@@ -24,11 +24,16 @@
     transition: opacity 0.2s ease;
 }
 
+/* ========================== Доп Info */
+
 .expandableRow{
   font: 'inherit' !important;
   background-color: var(--color-surface);
   color: var(--color-text) !important; 
 }
+
+/* ================================= */
+
 
 .instructionContainer{
     display: flex;
@@ -37,6 +42,7 @@
     width: 1350px;
     height: 400px;
 }
+
 
 .NameInput{
     display: inline-block;

@@ -7,6 +7,11 @@ export const clientApi = {
     getClientById: async (id) => api.get(`/clients/getone/${id}`),
     updateClient: async (id, data) => api.patch(`/clients/update/${id}`, data),
     deleteClient: async (id) => api.delete(`/clients/delete/${id}`),
+
+    createAndGroup: async (data) => api.post('/clients/createandgroup', data),
+    getGrouped: async (data) => api.post('/clients/groupedclients', data),
+    search: async (data) => api.get(`/clients/search?q=${data}` ),
+
     
     // Другие эндпоинты могут быть добавлены здесь
 }
